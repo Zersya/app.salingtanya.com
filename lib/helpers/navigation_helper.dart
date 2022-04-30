@@ -1,5 +1,6 @@
 import 'package:app_salingtanya/modules/auth/view/auth_page.dart';
 import 'package:app_salingtanya/modules/dashboard/view/dashboard_page.dart';
+import 'package:app_salingtanya/modules/room/view/detail_room_page.dart';
 import 'package:app_salingtanya/modules/splash/view/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -48,6 +49,21 @@ class NavigationHelper {
 
           return null;
         },
+        routes: [
+          GoRoute(
+            path: 'rooms',
+            name: 'ListRoomPage',
+            redirect: (state) {
+              return '/';
+            },
+          ),
+          GoRoute(
+            path: 'rooms/:rid',
+            name: 'DetailRoomPage',
+            builder: (context, state) =>
+                DetailRoomPage(roomId: state.params['rid']!),
+          ),
+        ],
       ),
     ],
   );

@@ -24,7 +24,7 @@ class _ListQuestionWidget extends ConsumerWidget {
                 padding: const EdgeInsets.all(8),
                 child: CustomErrorWidget(
                   message:
-                  'No questions has been made\nTap the button to create one',
+                      'No questions has been made\nTap the button to create one',
                   onTap: () {
                     final controller = TextEditingController();
                     _CreateQuestionWidget(controller: controller)
@@ -34,32 +34,28 @@ class _ListQuestionWidget extends ConsumerWidget {
               );
             }
 
-            return Scrollbar(
+            return ListView.builder(
+              padding: const EdgeInsets.all(16),
               controller: scrollController,
-              isAlwaysShown: true,
-              child: ListView.builder(
-                padding: const EdgeInsets.all(16),
-                controller: scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  final question = data[index];
-                  return SizedBox(
-                    width: 220,
-                    child: Card(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Text(
-                            question.value.capitalize,
-                            textAlign: TextAlign.center,
-                          ),
+              scrollDirection: Axis.horizontal,
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                final question = data[index];
+                return SizedBox(
+                  width: 220,
+                  child: Card(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          question.value.capitalize,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             );
           },
           loading: () => const Padding(

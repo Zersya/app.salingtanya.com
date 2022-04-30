@@ -1,42 +1,74 @@
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/exceptions.dart';
+import 'package:app_salingtanya/utils/wrappers/error_wrapper.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
 
 class RoomsRepository {
   final db = GetIt.I<Database>();
 
-  Future createRoom(String name) async {
-    try {
-      final now = DateTime.now();
-      final slug =
-          // ignore: lines_longer_than_80_chars
-          '${name.toLowerCase().replaceAll(' ', '-')}-${now.millisecondsSinceEpoch}';
+  Future<Room> createRoom(String name) async {
+    final result = await ErrorWrapper.guard(
+      () {
+        final now = DateTime.now();
+        final slug =
+            // ignore: lines_longer_than_80_chars
+            '${name.toLowerCase().replaceAll(' ', '-')}-${now.millisecondsSinceEpoch}';
 
-      await db.createDocument(
-        collectionId: kRoomsCollectionId,
-        documentId: 'unique()',
-        data: <String, dynamic>{
-          'name': name,
-          'slug': slug,
-          'created_at': now.toIso8601String(),
-        },
-      );
-    } catch (e) {
-      throw ExceptionWithMessage(e.toString());
-    }
+        return db.createDocument(
+          collectionId: kRoomsCollectionId,
+          documentId: 'unique()',
+          data: <String, dynamic>{
+            'name': name,
+            'slug': slug,
+            'created_at': now.toIso8601String(),
+            'updated_at': now.toIso8601String(),
+          },
+        );
+      },
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+
+    return Room.fromJson(result.data);
   }
 
   Future<List<Room>> getRooms() async {
-    try {
-      final result = await db.listDocuments(collectionId: kRoomsCollectionId);
+    final result = await ErrorWrapper.guard(
+      () => db.listDocuments(collectionId: kRoomsCollectionId),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
 
-      return result.documents.reversed
-          .map((e) => Room.fromJson(e.data))
-          .toList();
-    } catch (e) {
-      throw ExceptionWithMessage(e.toString());
-    }
+    return result.documents.reversed.map((e) => Room.fromJson(e.data)).toList();
+  }
+
+  Future<Room> getRoom(String id) async {
+    final result = await ErrorWrapper.guard(
+      () => db.getDocument(collectionId: kRoomsCollectionId, documentId: id),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+
+    return Room.fromJson(result.data);
+  }
+
+  Future<List<String>> insertNames(List<String> names, String docId) async {
+    final now = DateTime.now();
+    final data = <String, dynamic>{
+      'member_names': names,
+      'updated_at': now.toIso8601String(),
+    };
+
+    final result = await ErrorWrapper.guard(
+      () => db.updateDocument(
+        collectionId: kRoomsCollectionId,
+        documentId: docId,
+        data: data,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+
+    return List<String>.from(result.data['member_names'] as List)
+        .map((e) => e)
+        .toList();
   }
 }

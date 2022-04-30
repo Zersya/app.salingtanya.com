@@ -3,8 +3,8 @@ import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/repositories/rooms_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RoomsNotifier extends StateNotifier<BasicListState<Room>> {
-  RoomsNotifier() : super(const BasicListState<Room>.idle([]));
+class ListRoomNotifier extends StateNotifier<BasicListState<Room>> {
+  ListRoomNotifier() : super(const BasicListState<Room>.idle([]));
 
   final _repo = RoomsRepository();
 

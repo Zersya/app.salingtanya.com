@@ -125,6 +125,7 @@ class _AppBody extends StatelessWidget {
 
     return DevicePreview(
       builder: (context) => MaterialApp.router(
+        onGenerateTitle: (context) => 'Saling Tanya',
         useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
         routeInformationParser: appRouter.routeInformationParser,

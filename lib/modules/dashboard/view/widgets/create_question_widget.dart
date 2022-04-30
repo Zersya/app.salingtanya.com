@@ -1,6 +1,5 @@
 part of '../dashboard_page.dart';
 
-
 class _CreateQuestionWidget extends ConsumerWidget {
   const _CreateQuestionWidget({
     Key? key,
@@ -22,12 +21,10 @@ class _CreateQuestionWidget extends ConsumerWidget {
       return;
     }
 
-    if(!controller.text.contains('?')) {
+    if (!controller.text.contains('?')) {
       GetIt.I<FlashMessageHelper>().showError('Please input a question');
       return;
     }
-
-
 
     await ref
         .read(createQuestionProvider.notifier)
@@ -45,7 +42,7 @@ class _CreateQuestionWidget extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          TextField(
+          TextFormField(
             controller: controller,
             autofocus: true,
             decoration: const InputDecoration(
@@ -53,27 +50,31 @@ class _CreateQuestionWidget extends ConsumerWidget {
               border: OutlineInputBorder(),
             ),
             textInputAction: TextInputAction.none,
-            onSubmitted: (value) => _onSubmitted(context, ref),
+            onFieldSubmitted: (value) => _onSubmitted(context, ref),
           ),
           const SizedBox(height: 16),
           Consumer(
             builder: (_, ref, __) {
               final questionCategories = ref.watch(questionCategoriesProvider);
               final selectedCategory =
-              ref.watch(selectedQuestionCategoryProvider);
+                  ref.watch(selectedQuestionCategoryProvider);
 
               return questionCategories.maybeWhen(
-                idle: (data) => DropdownButton<QuestionCategory>(
+                idle: (data) => DropdownButtonFormField<QuestionCategory>(
+                  decoration: const InputDecoration(
+                    labelText: 'Category',
+                    border: OutlineInputBorder(),
+                  ),
                   isExpanded: true,
                   hint: const Text('Select a category'),
                   value: selectedCategory,
                   items: data
                       .map(
                         (e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e.nameEn),
-                    ),
-                  )
+                          value: e,
+                          child: Text(e.nameEn),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) => ref
                       .read(selectedQuestionCategoryProvider.notifier)
@@ -107,7 +108,10 @@ class _CreateQuestionWidget extends ConsumerWidget {
                 ),
               ],
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Align(
+              alignment: Alignment.centerRight,
+              child: CircularProgressIndicator(),
+            ),
           ),
         ],
       ),

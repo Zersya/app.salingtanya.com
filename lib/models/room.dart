@@ -11,8 +11,10 @@ class Room {
     this.slug,
     this.description,
     this.memberIds,
+    this.memberNames,
     this.questionIds,
-    this.createdAt, {
+    this.createdAt,
+    this.updatedAt, {
     required this.isActive,
   });
 
@@ -38,9 +40,15 @@ class Room {
   @JsonKey(name: 'member_ids')
   final List<String> memberIds;
 
+  @JsonKey(name: 'member_names')
+  final List<String> memberNames;
+
   @JsonKey(name: 'question_ids')
   final List<String> questionIds;
 
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
+
+  @JsonKey(name: 'updated_at')
+  final DateTime updatedAt;
 }

@@ -32,7 +32,15 @@ class _ListRoomWidget extends ConsumerWidget {
                 title: Text(room.name.capitalize),
                 subtitle:
                     room.description != null ? Text(room.description!) : null,
-                onTap: () {},
+                onTap: () {
+                  ref.read(selectedRoomProvider.notifier).state = room;
+                  GetIt.I<NavigationHelper>().goRouter.goNamed(
+                    'DetailRoomPage',
+                    params: {
+                      'rid': room.id,
+                    },
+                  );
+                },
               );
             },
             itemCount: data.length,

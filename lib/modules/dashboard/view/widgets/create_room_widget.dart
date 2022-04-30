@@ -61,7 +61,10 @@ class _CreateRoomWidget extends ConsumerWidget {
                 ),
               ],
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => const Align(
+              alignment: Alignment.centerRight,
+              child: CircularProgressIndicator(),
+            ),
           ),
         ],
       ),

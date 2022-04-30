@@ -7,9 +7,10 @@ import 'package:app_salingtanya/models/question_category.dart';
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/modules/dashboard/riverpods/create_question_riverpod.dart';
 import 'package:app_salingtanya/modules/dashboard/riverpods/create_room_riverpod.dart';
+import 'package:app_salingtanya/modules/dashboard/riverpods/list_question_riverpod.dart';
+import 'package:app_salingtanya/modules/dashboard/riverpods/list_room_riverpod.dart';
 import 'package:app_salingtanya/modules/dashboard/riverpods/question_categories_riverpod.dart';
-import 'package:app_salingtanya/modules/dashboard/riverpods/questions_riverpod.dart';
-import 'package:app_salingtanya/modules/dashboard/riverpods/rooms_riverpod.dart';
+import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/repositories/auth_repository.dart';
 import 'package:app_salingtanya/utils/extensions/string_extension.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
@@ -20,33 +21,38 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
 
 part 'widgets/create_question_widget.dart';
-
 part 'widgets/create_room_widget.dart';
-
+part 'widgets/list_question_widget.dart';
 part 'widgets/list_room_widget.dart';
 
-part 'widgets/list_question_widget.dart';
-
 final roomsProvider =
-    StateNotifierProvider<RoomsNotifier, BasicListState<Room>>(
-  (ref) => RoomsNotifier()..getRooms(),
+    StateNotifierProvider<ListRoomNotifier, BasicListState<Room>>(
+  (ref) => ListRoomNotifier()..getRooms(),
 );
 
 final popularQuestionsProvider =
-    StateNotifierProvider<QuestionsNotifier, BasicListState<Question>>(
-  (ref) => QuestionsNotifier()..getQuestions(isPopular: true),
+    StateNotifierProvider<ListQuestionNotifier, BasicListState<Question>>(
+  (ref) => ListQuestionNotifier()..getQuestions(isPopular: true),
 );
 
 final latestAddedQuestionsProvider =
-StateNotifierProvider<QuestionsNotifier, BasicListState<Question>>(
-      (ref) => QuestionsNotifier()..getQuestions(),
+    StateNotifierProvider<ListQuestionNotifier, BasicListState<Question>>(
+  (ref) => ListQuestionNotifier()..getQuestions(),
 );
 
 final createRoomProvider =
     StateNotifierProvider.autoDispose<CreateRoomNotifier, BasicState>(
   (ref) => CreateRoomNotifier(
-    onCreate: () {
+    onCreate: (result) {
+      ref.read(selectedRoomProvider.notifier).state = result;
+
       ref.read(roomsProvider.notifier).getRooms();
+      GetIt.I<NavigationHelper>().goRouter.goNamed(
+        'DetailRoomPage',
+        params: {
+          'rid': result.id,
+        },
+      );
     },
   ),
 );
@@ -131,32 +137,42 @@ class DashboardPage extends StatelessWidget {
         },
       ),
       body: const CustomScrollView(
-        physics:  BouncingScrollPhysics(),
+        physics: BouncingScrollPhysics(),
         slivers: [
-          SliverToBoxAdapter(
-            child: Text(
-              'Latest Added Questions',
-              style: TextStyle(fontSize: 24),
-            ),
-          ),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            sliver: _ListQuestionWidget(isPopular: false),
-          ),
-          SliverToBoxAdapter(
-            child: Text(
-              'Popular Questions',
-              style: TextStyle(fontSize: 24),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                'Popular Questions',
+                style: TextStyle(fontSize: 24),
+              ),
             ),
           ),
           SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 16),
             sliver: _ListQuestionWidget(isPopular: true),
           ),
-          SliverToBoxAdapter(
-            child: Text(
-              'Rooms',
-              style: TextStyle(fontSize: 24),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                'Latest Added Questions',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            sliver: _ListQuestionWidget(isPopular: false),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                'Rooms',
+                style: TextStyle(fontSize: 24),
+              ),
             ),
           ),
           SliverPadding(

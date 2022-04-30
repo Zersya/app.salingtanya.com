@@ -3,8 +3,8 @@ import 'package:app_salingtanya/models/question.dart';
 import 'package:app_salingtanya/repositories/questions_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class QuestionsNotifier extends StateNotifier<BasicListState<Question>> {
-  QuestionsNotifier() : super(const BasicListState<Question>.idle([]));
+class ListQuestionNotifier extends StateNotifier<BasicListState<Question>> {
+  ListQuestionNotifier() : super(const BasicListState<Question>.idle([]));
 
   final _repo = QuestionsRepository();
 

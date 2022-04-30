@@ -1,11 +1,12 @@
 import 'package:app_salingtanya/freezed/basic_state.dart';
+import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/repositories/rooms_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateRoomNotifier extends StateNotifier<BasicState> {
   CreateRoomNotifier({this.onCreate}) : super(const BasicState.idle());
 
-  final Function()? onCreate;
+  final Function(Room)? onCreate;
 
   final _repo = RoomsRepository();
 
@@ -13,8 +14,8 @@ class CreateRoomNotifier extends StateNotifier<BasicState> {
     try {
       state = const BasicState.loading();
 
-      await _repo.createRoom(name);
-      onCreate?.call();
+      final result = await _repo.createRoom(name);
+      onCreate?.call(result);
 
       state = const BasicState.idle();
     } catch (e) {
