@@ -6,7 +6,7 @@ import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/modules/room/riverpod/detail_room_riverpod.dart';
-import 'package:app_salingtanya/modules/room/riverpod/insert_names_riverpod.dart';
+import 'package:app_salingtanya/modules/room/riverpod/update_detail_room_riverpod.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/utils/extensions/string_extension.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
@@ -28,17 +28,25 @@ final namesController =
   return currentNames.map((e) => TextEditingController(text: e)).toList();
 });
 
-final insertNamesProvider =
-    StateNotifierProvider.autoDispose<InsertNamesNotifier, BasicFormState>(
-  (ref) => InsertNamesNotifier(
-    onInsert: (_) {
+final updateDetailRoomProvider =
+    StateNotifierProvider<UpdateDetailRoomNotifier, BasicFormState>(
+  (ref) => UpdateDetailRoomNotifier(
+    onUpdate: (_) {
       ref.read(detailRoomProvider.notifier).getRoom();
     },
   ),
 );
 
 final detailRoomProvider = StateNotifierProvider.autoDispose<DetailRoomNotifier,
-    BasicDetailState<Room?>>(DetailRoomNotifier.new);
+    BasicDetailState<Room?>>((ref) {
+  ref.onDispose(() {
+    ref
+      ..refresh(selectedQuestionsProvider)
+      ..refresh(updateDetailRoomProvider);
+  });
+
+  return DetailRoomNotifier(ref);
+});
 
 class DetailRoomPage extends ConsumerStatefulWidget {
   const DetailRoomPage({Key? key, required this.roomId}) : super(key: key);
@@ -115,7 +123,7 @@ class _DetailRoomBody extends StatelessWidget {
                     'Tambahkan nama akrab teman main kamu',
                     style: TextStyle(
                       color: room.memberNames.isNotEmpty
-                          ? ColorName.textSecondary
+                          ? Theme.of(context).colorScheme.onBackground
                           : ColorName.primary,
                     ),
                   ),
@@ -123,14 +131,31 @@ class _DetailRoomBody extends StatelessWidget {
               );
             },
           ),
-          _TutorialItemWidget(
-            text: 'Lalu kamu bisa',
-            child: InkWell(
-              onTap: () {},
-              child: const Text(
-                'Menambahkan pertanyaan yang kamu inginkan',
-              ),
-            ),
+          Consumer(
+            builder: (context, ref, _) {
+              final room = ref.watch(selectedRoomProvider);
+
+              return _TutorialItemWidget(
+                text: 'Lalu kamu bisa',
+                subtext: '${room!.questionIds.length} selected',
+                child: InkWell(
+                  onTap: () {
+                    GetIt.I<NavigationHelper>().goNamed(
+                      'SelectQuestionsPage',
+                      params: {'rid': room.id},
+                    );
+                  },
+                  child: Text(
+                    'Menambahkan pertanyaan yang kamu inginkan',
+                    style: TextStyle(
+                      color: room.questionIds.isNotEmpty
+                          ? Theme.of(context).colorScheme.onBackground
+                          : ColorName.primary,
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
           const _TutorialItemWidget(
             text: 'Kamu bisa mengubahnya lagi nanti',
@@ -172,12 +197,12 @@ class _TutorialItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Container(
               width: 8,
               height: 8,
-              decoration: const BoxDecoration(
-                color: Colors.black,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onBackground,
                 shape: BoxShape.circle,
               ),
             ),
@@ -208,9 +233,9 @@ class _TutorialItemWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       subtext!,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: ColorName.textPrimary,
+                        color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

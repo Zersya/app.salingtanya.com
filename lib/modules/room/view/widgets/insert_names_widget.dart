@@ -16,13 +16,14 @@ class _InsertNameWidget extends ConsumerWidget {
 
     FocusScope.of(context).unfocus();
 
-    await ref.read(insertNamesProvider.notifier).insertNames(
-          roomId,
-          controllers
-              .where((element) => element.text.isNotEmpty)
-              .map((e) => e.text)
-              .toList(),
-        );
+    final names = controllers
+        .where((element) => element.text.isNotEmpty)
+        .map((e) => e.text)
+        .toList();
+
+    await ref
+        .read(updateDetailRoomProvider.notifier)
+        .updateNames(roomId, names);
 
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
@@ -30,7 +31,7 @@ class _InsertNameWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final insertNames = ref.watch(insertNamesProvider);
+    final updateNames = ref.watch(updateDetailRoomProvider);
 
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 24),
@@ -39,7 +40,7 @@ class _InsertNameWidget extends ConsumerWidget {
         children: <Widget>[
           const _ListNamesWidget(),
           const SizedBox(height: 16),
-          insertNames.maybeWhen(
+          updateNames.maybeWhen(
             orElse: () => Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -83,36 +84,44 @@ class _ListNamesWidget extends ConsumerWidget {
     return ListView.builder(
       shrinkWrap: true,
       itemCount: controllers.length,
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            Flexible(
-              child: TextFormField(
-                controller: controllers[index],
-                autofocus: true,
-                decoration: InputDecoration(
-                  labelText: "What is your friend's name? ( ${index + 1} )",
-                  border: const OutlineInputBorder(),
-                ),
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (value) {
-                  final newControllers = controllers.toList()
-                    ..add(TextEditingController());
+      itemBuilder: (context, index) {
+        final isLastItem = controllers.length == index + 1;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            children: [
+              Flexible(
+                child: TextFormField(
+                  controller: controllers[index],
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    labelText: "What is your friend's name? ( ${index + 1} )",
+                    border: const OutlineInputBorder(),
+                  ),
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (value) {
+                    final newControllers = controllers.toList()
+                      ..add(TextEditingController());
 
-                  ref.read(namesController.notifier).state = newControllers;
-                },
+                    ref.read(namesController.notifier).state = newControllers;
+                  },
+                ),
               ),
-            ),
-            if (controllers.length == index + 1)
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: InkWell(
                   onTap: () {
-                    final newControllers = ref.read(namesController).toList()
-                      ..add(TextEditingController());
+                    if (isLastItem) {
+                      final newControllers = ref.read(namesController).toList()
+                        ..add(TextEditingController());
 
-                    ref.read(namesController.notifier).state = newControllers;
+                      ref.read(namesController.notifier).state = newControllers;
+                    } else {
+                      final newControllers = controllers.toList()
+                        ..removeAt(index);
+
+                      ref.read(namesController.notifier).state = newControllers;
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.all(16),
@@ -121,13 +130,14 @@ class _ListNamesWidget extends ConsumerWidget {
                         color: ColorName.border,
                       ),
                     ),
-                    child: const Icon(Icons.add),
+                    child: Icon(isLastItem ? Icons.add : Icons.remove),
                   ),
                 ),
               )
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

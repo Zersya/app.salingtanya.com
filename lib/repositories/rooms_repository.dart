@@ -51,10 +51,34 @@ class RoomsRepository {
     return Room.fromJson(result.data);
   }
 
-  Future<List<String>> insertNames(List<String> names, String docId) async {
+  Future<List<String>> updateNames(List<String> names, String docId) async {
     final now = DateTime.now();
     final data = <String, dynamic>{
       'member_names': names,
+      'updated_at': now.toIso8601String(),
+    };
+
+    final result = await ErrorWrapper.guard(
+      () => db.updateDocument(
+        collectionId: kRoomsCollectionId,
+        documentId: docId,
+        data: data,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+
+    return List<String>.from(result.data['member_names'] as List)
+        .map((e) => e)
+        .toList();
+  }
+
+  Future<List<String>> updateQuestions(
+    List<String> questions,
+    String docId,
+  ) async {
+    final now = DateTime.now();
+    final data = <String, dynamic>{
+      'question_ids': questions,
       'updated_at': now.toIso8601String(),
     };
 

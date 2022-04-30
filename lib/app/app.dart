@@ -62,6 +62,7 @@ class _AppState extends ConsumerState<App> {
       primaryContainer: ColorName.primaryVariant,
       secondary: ColorName.info,
       secondaryContainer: ColorName.infoVariant,
+      outline: ColorName.border,
       background: ColorName.background,
       error: ColorName.errorBackground,
       surface: ColorName.white,
@@ -143,6 +144,9 @@ class _AppBody extends StatelessWidget {
           background: Container(color: ColorName.background),
         ),
         theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            color: ColorName.primary,
+          ),
           colorScheme: colorSchemeLight,
           primaryColor: colorSchemeLight.primary,
           backgroundColor: colorSchemeLight.background,
@@ -155,6 +159,9 @@ class _AppBody extends StatelessWidget {
           ),
         ),
         darkTheme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            color: ColorName.primary,
+          ),
           colorScheme: colorSchemeDark,
           primaryColor: colorSchemeDark.primary,
           backgroundColor: colorSchemeDark.background,

@@ -1,7 +1,15 @@
-part of '../dashboard_page.dart';
+import 'package:app_salingtanya/helpers/navigation_helper.dart';
+import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:app_salingtanya/utils/extensions/string_extension.dart';
+import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
+import 'package:app_salingtanya/widgets/custom_error_widget.dart';
+import 'package:app_salingtanya/widgets/room/widget/create_room_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 
-class _ListRoomWidget extends ConsumerWidget {
-  const _ListRoomWidget({Key? key}) : super(key: key);
+class ListRoomWidget extends ConsumerWidget {
+  const ListRoomWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +24,7 @@ class _ListRoomWidget extends ConsumerWidget {
                 message: 'No rooms has been made\nTap the button to create one',
                 onTap: () {
                   final controller = TextEditingController();
-                  _CreateRoomWidget(controller: controller)
+                  CreateRoomWidget(controller: controller)
                       .showCustomDialog<void>(context);
                 },
               ),
@@ -34,7 +42,7 @@ class _ListRoomWidget extends ConsumerWidget {
                     room.description != null ? Text(room.description!) : null,
                 onTap: () {
                   ref.read(selectedRoomProvider.notifier).state = room;
-                  GetIt.I<NavigationHelper>().goRouter.goNamed(
+                  GetIt.I<NavigationHelper>().goNamed(
                     'DetailRoomPage',
                     params: {
                       'rid': room.id,

@@ -1,7 +1,12 @@
-part of '../dashboard_page.dart';
+import 'package:app_salingtanya/helpers/flash_message_helper.dart';
+import 'package:app_salingtanya/models/question_category.dart';
+import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 
-class _CreateQuestionWidget extends ConsumerWidget {
-  const _CreateQuestionWidget({
+class CreateQuestionWidget extends ConsumerWidget {
+  const CreateQuestionWidget({
     Key? key,
     required this.controller,
   }) : super(key: key);
@@ -42,6 +47,8 @@ class _CreateQuestionWidget extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          const Text('You can add new question'),
+          const SizedBox(height: 16),
           TextFormField(
             controller: controller,
             autofocus: true,

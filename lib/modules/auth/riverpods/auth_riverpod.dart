@@ -27,7 +27,7 @@ class AuthNotifier extends StateNotifier<BasicState> {
 
       await _repo.signInGoogle();
 
-      GetIt.I<NavigationHelper>().goRouter.goNamed('DashboardPage');
+      GetIt.I<NavigationHelper>().goNamed('DashboardPage');
 
       state = const BasicState.idle();
     } catch (e) {

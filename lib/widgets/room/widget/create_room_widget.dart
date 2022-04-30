@@ -1,7 +1,12 @@
-part of '../dashboard_page.dart';
 
-class _CreateRoomWidget extends ConsumerWidget {
-  const _CreateRoomWidget({Key? key, required this.controller})
+import 'package:app_salingtanya/helpers/flash_message_helper.dart';
+import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+
+class CreateRoomWidget extends ConsumerWidget {
+  const CreateRoomWidget({Key? key, required this.controller})
       : super(key: key);
 
   final TextEditingController controller;
