@@ -168,7 +168,12 @@ class _DetailRoomBody extends StatelessWidget {
             text: 'Bila sudah mengerti,',
             child: InkWell(
               onTap: () {},
-              child: const Text('Ayo main!!'),
+              child: const Text(
+                'Ayo main!!',
+                style: TextStyle(
+                  color: ColorName.primary,
+                ),
+              ),
             ),
           ),
         ],
