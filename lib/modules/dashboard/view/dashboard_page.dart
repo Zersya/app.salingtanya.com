@@ -24,6 +24,8 @@ class DashboardPage extends StatelessWidget {
                 orElse: () => false,
               );
 
+          final isLight = Theme.of(context).brightness == Brightness.light;
+
           return SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
             visible: isVisible,
@@ -38,7 +40,7 @@ class DashboardPage extends StatelessWidget {
             children: [
               SpeedDialChild(
                 child: const Icon(Icons.table_restaurant),
-                backgroundColor: Colors.white,
+                backgroundColor: isLight ? Colors.white : Colors.black87,
                 label: 'Create Room',
                 onTap: () {
                   final controller = TextEditingController();
@@ -48,7 +50,7 @@ class DashboardPage extends StatelessWidget {
               ),
               SpeedDialChild(
                 child: const Icon(Icons.question_mark),
-                backgroundColor: Colors.white,
+                backgroundColor: isLight ? Colors.white : Colors.black87,
                 label: 'Create Question',
                 onTap: () {
                   final controller = TextEditingController();

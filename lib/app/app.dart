@@ -8,6 +8,7 @@ import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/utils/get_it.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -125,6 +126,8 @@ class _AppBody extends StatelessWidget {
     );
 
     return DevicePreview(
+      // ignore: avoid_redundant_argument_values
+      enabled: kDebugMode,
       builder: (context) => MaterialApp.router(
         onGenerateTitle: (context) => 'Saling Tanya',
         useInheritedMediaQuery: true,
