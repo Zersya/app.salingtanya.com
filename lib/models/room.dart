@@ -17,9 +17,12 @@ class Room {
     this.questionIds,
     this.createdAt,
     this.updatedAt,
-    this.writeBy, {
-    required this.isActive,
-  });
+    this.startedAt,
+    this.writeBy,
+    this.indexSession,
+    this.indexShuffle,
+    this.activeQuestionId,
+  );
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
 
@@ -37,9 +40,6 @@ class Room {
 
   final String? description;
 
-  @JsonKey(name: 'is_active')
-  final bool isActive;
-
   @JsonKey(name: 'member_ids')
   final List<String> memberIds;
 
@@ -55,8 +55,20 @@ class Room {
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
 
+  @JsonKey(name: 'started_at')
+  final DateTime? startedAt;
+
   @JsonKey(name: '\$write')
   final List<String> writeBy;
+
+  @JsonKey(name: 'index_session')
+  final int indexSession;
+
+  @JsonKey(name: 'index_shuffle')
+  final int indexShuffle;
+
+  @JsonKey(name: 'active_question_id')
+  final String? activeQuestionId;
 
   bool isCreatedByMe() =>
       writeBy.contains('user:${GetIt.I<UserHelper>().userId}');

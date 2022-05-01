@@ -70,3 +70,5 @@ final questionCategoriesProvider = StateNotifierProvider.autoDispose<
 final selectedRoomProvider = StateProvider<Room?>((ref) => null);
 
 final selectedQuestionsProvider = StateProvider<List<String>>((ref) => []);
+
+final activeQuestionProvider = StateProvider<Question?>((ref) => null);

@@ -7,7 +7,7 @@ class UpdateDetailRoomNotifier extends StateNotifier<BasicFormState> {
     this.onUpdate,
   }) : super(const BasicFormState.idle());
 
-  final Function(List<String>)? onUpdate;
+  final Function()? onUpdate;
 
   final _repo = RoomsRepository();
 
@@ -15,8 +15,8 @@ class UpdateDetailRoomNotifier extends StateNotifier<BasicFormState> {
     try {
       state = const BasicFormState.loading();
 
-      final result = await _repo.updateNames(names, docId);
-      onUpdate?.call(result);
+      await _repo.updateNames(names, docId);
+      onUpdate?.call();
 
       state = const BasicFormState.succeed();
     } catch (e) {
@@ -28,8 +28,38 @@ class UpdateDetailRoomNotifier extends StateNotifier<BasicFormState> {
     try {
       state = const BasicFormState.loading();
 
-      final result = await _repo.updateQuestions(questions, docId);
-      onUpdate?.call(result);
+      await _repo.updateQuestions(questions, docId);
+      onUpdate?.call();
+
+      state = const BasicFormState.succeed();
+    } catch (e) {
+      state = const BasicFormState.failed();
+    }
+  }
+
+  Future startRoom(String docId) async {
+    try {
+      state = const BasicFormState.loading();
+
+      await _repo.startRoom(docId);
+      onUpdate?.call();
+
+      state = const BasicFormState.succeed();
+    } catch (e) {
+      state = const BasicFormState.failed();
+    }
+  }
+
+  Future updateActiveQuestionId(
+    String questionId,
+    int indexShuffle,
+    String docId,
+  ) async {
+    try {
+      state = const BasicFormState.loading();
+
+      await _repo.updateActiveQuestionId(questionId, indexShuffle, docId);
+      onUpdate?.call();
 
       state = const BasicFormState.succeed();
     } catch (e) {

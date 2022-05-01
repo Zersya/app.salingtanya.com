@@ -102,4 +102,43 @@ class RoomsRepository {
         .map((e) => e)
         .toList();
   }
+
+  Future<void> startRoom(String docId) async {
+    final now = DateTime.now();
+    final data = <String, dynamic>{
+      'started_at': now.toIso8601String(),
+      'updated_at': now.toIso8601String(),
+    };
+
+    await ErrorWrapper.guard(
+      () => db.updateDocument(
+        collectionId: kRoomsCollectionId,
+        documentId: docId,
+        data: data,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+  }
+
+  Future<void> updateActiveQuestionId(
+    String questionId,
+    int indexShuffle,
+    String docId,
+  ) async {
+    final now = DateTime.now();
+    final data = <String, dynamic>{
+      'active_question_id': questionId,
+      'index_shuffle': indexShuffle,
+      'updated_at': now.toIso8601String(),
+    };
+
+    await ErrorWrapper.guard(
+      () => db.updateDocument(
+        collectionId: kRoomsCollectionId,
+        documentId: docId,
+        data: data,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+  }
 }

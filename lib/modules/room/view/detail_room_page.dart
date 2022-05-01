@@ -4,8 +4,10 @@ import 'package:app_salingtanya/gen/assets.gen.dart';
 import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
+import 'package:app_salingtanya/models/question.dart';
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/modules/room/riverpod/detail_room_riverpod.dart';
+import 'package:app_salingtanya/modules/room/riverpod/question_room_riverpod.dart';
 import 'package:app_salingtanya/modules/room/riverpod/update_detail_room_riverpod.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/utils/extensions/string_extension.dart';
@@ -32,17 +34,15 @@ final namesController =
 
 final updateDetailRoomProvider =
     StateNotifierProvider<UpdateDetailRoomNotifier, BasicFormState>(
-  (ref) => UpdateDetailRoomNotifier(
-    onUpdate: (_) {
-      ref.read(detailRoomProvider.notifier).getRoom();
-    },
-  ),
+  (ref) => UpdateDetailRoomNotifier(),
 );
 
 final detailRoomProvider = StateNotifierProvider.autoDispose<DetailRoomNotifier,
-    BasicDetailState<Room?>>((ref) {
-  return DetailRoomNotifier(ref);
-});
+    BasicDetailState<Room?>>(DetailRoomNotifier.new);
+
+final questionRoomProvider = StateNotifierProvider.autoDispose<
+    QuestionRoomNotifier,
+    BasicDetailState<Question?>>(QuestionRoomNotifier.new);
 
 class DetailRoomPage extends ConsumerStatefulWidget {
   const DetailRoomPage({Key? key, required this.roomId}) : super(key: key);
@@ -85,6 +85,30 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Detail Room'),
+          actions: [
+            Consumer(
+              builder: (context, ref, _) {
+                final room = ref.watch(selectedRoomProvider);
+
+                if (room == null || room.startedAt == null) {
+                  return const SizedBox();
+                }
+
+                return IconButton(
+                  onPressed: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: '$defaultUrl/public-room/${room.id}',
+                      ),
+                    );
+                    GetIt.I<FlashMessageHelper>()
+                        .showTopFlash('URL ruangan disalin');
+                  },
+                  icon: const Icon(Icons.share),
+                );
+              },
+            ),
+          ],
         ),
         body: detailRoomState.maybeWhen(
           idle: (_) => const _DetailRoomBody(),
@@ -106,9 +130,79 @@ class _DetailRoomBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(selectedRoomProvider);
+    final room = ref.watch(selectedRoomProvider)!;
+    final isCreatedByMe = room.isCreatedByMe();
 
-    final isCreatedByMe = room!.isCreatedByMe();
+    final stateQuestionRoom = ref.watch(questionRoomProvider);
+
+    final session = room.indexSession + 1;
+
+    if (room.startedAt != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Permainan dimulai pada sesi $session'),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: SizedBox(
+                height: 100,
+                child: stateQuestionRoom.maybeWhen(
+                  idle: (data) => Column(
+                    children: [
+                      if (data != null)
+                        Text(
+                          data.value.capitalize,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      if (isCreatedByMe)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: TextButton(
+                            onPressed: () {
+                              final result = ref
+                                  .read(questionRoomProvider.notifier)
+                                  .getRandomQuestionId(room.questionIds);
+
+                              ref
+                                  .read(updateDetailRoomProvider.notifier)
+                                  .updateActiveQuestionId(
+                                    result,
+                                    room.indexShuffle + 1,
+                                    room.id,
+                                  );
+                            },
+                            child: const Text('Dapatkan pertanyaan'),
+                          ),
+                        ),
+                    ],
+                  ),
+                  orElse: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return const _SetupRoomWidget();
+  }
+}
+
+class _SetupRoomWidget extends ConsumerWidget {
+  const _SetupRoomWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final room = ref.watch(selectedRoomProvider)!;
+
+    final isCreatedByMe = room.isCreatedByMe();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
@@ -201,7 +295,9 @@ class _DetailRoomBody extends ConsumerWidget {
           _TutorialItemWidget(
             text: 'Bila sudah mengerti,',
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                ref.read(updateDetailRoomProvider.notifier).startRoom(room.id);
+              },
               child: const Text(
                 'Ayo main!!',
                 style: TextStyle(

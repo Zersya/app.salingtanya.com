@@ -17,8 +17,13 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
       (json['question_ids'] as List<dynamic>).map((e) => e as String).toList(),
       DateTime.parse(json['created_at'] as String),
       DateTime.parse(json['updated_at'] as String),
+      json['started_at'] == null
+          ? null
+          : DateTime.parse(json['started_at'] as String),
       (json[r'$write'] as List<dynamic>).map((e) => e as String).toList(),
-      isActive: json['is_active'] as bool,
+      json['index_session'] as int,
+      json['index_shuffle'] as int,
+      json['active_question_id'] as String?,
     );
 
 Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
@@ -27,11 +32,14 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'name': instance.name,
       'slug': instance.slug,
       'description': instance.description,
-      'is_active': instance.isActive,
       'member_ids': instance.memberIds,
       'member_names': instance.memberNames,
       'question_ids': instance.questionIds,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      'started_at': instance.startedAt?.toIso8601String(),
       r'$write': instance.writeBy,
+      'index_session': instance.indexSession,
+      'index_shuffle': instance.indexShuffle,
+      'active_question_id': instance.activeQuestionId,
     };

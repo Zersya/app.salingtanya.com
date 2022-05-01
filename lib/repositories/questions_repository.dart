@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app_salingtanya/models/question.dart';
 import 'package:app_salingtanya/models/question_category.dart';
 import 'package:app_salingtanya/utils/constants.dart';
@@ -26,6 +28,18 @@ class QuestionsRepository {
     );
   }
 
+  Future<Question> getQuestion(String questionId) async {
+    final result = await ErrorWrapper.guard(
+      () => db.getDocument(
+        collectionId: kQuestionsCollectionId,
+        documentId: questionId,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+
+    return Question.fromJson(result.data);
+  }
+
   Future<List<Question>> getQuestions({required bool isPopular}) async {
     final result = await ErrorWrapper.guard(
       () => db.listDocuments(
@@ -51,5 +65,12 @@ class QuestionsRepository {
     return result.documents
         .map((e) => QuestionCategory.fromJson(e.data))
         .toList();
+  }
+
+  String getRandomQuestionId(List<String> questionIds) {
+    final random = Random();
+    final index = random.nextInt(questionIds.length);
+
+    return questionIds[index];
   }
 }
