@@ -57,10 +57,17 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
   @override
   void initState() {
     ref.read(detailRoomProvider.notifier)
-      ..roomId = widget.roomId
+      ..subscribe(widget.roomId)
+      ..listen()
       ..getRoom();
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    ref.read(detailRoomProvider.notifier).close();
+    super.dispose();
   }
 
   @override
@@ -72,7 +79,7 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
         ref
           ..refresh(selectedQuestionsProvider)
           ..refresh(updateDetailRoomProvider);
-          
+
         return true;
       },
       child: Scaffold(
@@ -171,15 +178,6 @@ class _DetailRoomBody extends ConsumerWidget {
               text:
                   'Terdapat ${room.questionIds.length} pertanyaan terpilih, yang akan di acak beserta dengan nama kamu',
             ),
-          if (isCreatedByMe)
-            const _TutorialItemWidget(
-              text: 'Kamu bisa mengubahnya lagi nanti',
-            ),
-          if (isCreatedByMe)
-            const _TutorialItemWidget(
-              text:
-                  'Kamu bisa menghapusnya jika kamu tidak ingin menggunakan room ini lagi',
-            ),
           _TutorialItemWidget(
             text: 'Salin lalu bagikan room ini dengan teman kamu',
             child: InkWell(
@@ -275,7 +273,7 @@ class _TutorialItemWidget extends StatelessWidget {
                     child: Text(
                       subtext!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.bold,
                       ),

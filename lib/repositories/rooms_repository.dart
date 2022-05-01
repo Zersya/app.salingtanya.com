@@ -7,6 +7,13 @@ import 'package:get_it/get_it.dart';
 
 class RoomsRepository {
   final db = GetIt.I<Database>();
+  final realtime = GetIt.I<Realtime>();
+  late RealtimeSubscription subscription;
+
+  Future<void> subscribe(String roomId) async {
+    subscription = realtime
+        .subscribe(['collections.$kRoomsCollectionId.documents.$roomId']);
+  }
 
   Future<Room> createRoom(String name) async {
     final result = await ErrorWrapper.guard(

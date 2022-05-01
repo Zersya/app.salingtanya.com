@@ -6,14 +6,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
   DetailRoomNotifier(this.ref)
-      : room = ref.read(selectedRoomProvider),
-        super(BasicDetailState<Room?>.idle(ref.read(selectedRoomProvider)));
+      : super(BasicDetailState<Room?>.idle(ref.read(selectedRoomProvider)));
 
   late String roomId;
 
-  final Room? room;
   final Ref ref;
   final _repo = RoomsRepository();
+
+  void subscribe(String roomId) {
+    this.roomId = roomId;
+    _repo.subscribe(roomId);
+  }
+
+  void listen() {
+    _repo.subscription.stream.listen((event) {
+      print(event);
+      final room = Room.fromJson(event.payload);
+
+      ref.read(selectedRoomProvider.notifier).state = room;
+      ref.read(selectedQuestionsProvider.notifier).state = room.questionIds;
+    });
+  }
+
+  void Function() close() => _repo.subscription.close;
 
   Future getRoom() async {
     try {
@@ -22,7 +37,7 @@ class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
       final result = await _repo.getRoom(roomId);
       ref.read(selectedRoomProvider.notifier).state = result;
       ref.read(selectedQuestionsProvider.notifier).state = result.questionIds;
-      
+
       state = BasicDetailState<Room?>.idle(result);
     } catch (e) {
       state = BasicDetailState<Room?>.error(e.toString());
