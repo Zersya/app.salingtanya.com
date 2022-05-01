@@ -47,7 +47,7 @@ class _AppState extends ConsumerState<App> {
         .setProject('625b9c6a48a44771d02e')
         .setSelfSigned();
 
-    GetItContainer.initialize(sdk);
+    GetItContainer.initializeAppwrite(sdk);
 
     super.initState();
   }

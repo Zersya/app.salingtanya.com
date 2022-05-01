@@ -112,7 +112,7 @@ class DashboardPage extends StatelessWidget {
             ),
           ),
           const SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: EdgeInsets.symmetric(vertical: 4),
             sliver: ListRoomWidget(),
           ),
           const SliverToBoxAdapter(

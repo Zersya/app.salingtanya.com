@@ -1,3 +1,5 @@
+import 'package:app_salingtanya/helpers/user_helper.dart';
+import 'package:get_it/get_it.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'room.g.dart';
@@ -14,7 +16,8 @@ class Room {
     this.memberNames,
     this.questionIds,
     this.createdAt,
-    this.updatedAt, {
+    this.updatedAt,
+    this.writeBy, {
     required this.isActive,
   });
 
@@ -51,4 +54,10 @@ class Room {
 
   @JsonKey(name: 'updated_at')
   final DateTime updatedAt;
+
+  @JsonKey(name: '\$write')
+  final List<String> writeBy;
+
+  bool isCreatedByMe() =>
+      writeBy.contains('user:${GetIt.I<UserHelper>().userId}');
 }

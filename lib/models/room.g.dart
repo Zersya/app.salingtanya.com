@@ -17,6 +17,7 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
       (json['question_ids'] as List<dynamic>).map((e) => e as String).toList(),
       DateTime.parse(json['created_at'] as String),
       DateTime.parse(json['updated_at'] as String),
+      (json[r'$write'] as List<dynamic>).map((e) => e as String).toList(),
       isActive: json['is_active'] as bool,
     );
 
@@ -32,4 +33,5 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'question_ids': instance.questionIds,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
+      r'$write': instance.writeBy,
     };

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
+import 'package:app_salingtanya/helpers/user_helper.dart';
 import 'package:app_salingtanya/utils/exceptions.dart';
 import 'package:app_salingtanya/utils/functions.dart';
 import 'package:appwrite/appwrite.dart';
@@ -23,6 +24,7 @@ class AuthRepository {
     } catch (e) {
       throw ExceptionWithMessage(e.toString());
     } finally {
+      await GetIt.I<UserHelper>().getSession();
       GetIt.I<NavigationHelper>().isLoggedIn = true;
 
       // final user = await account.get();
@@ -49,6 +51,7 @@ class AuthRepository {
         failure: redirectUrl,
       );
       GetIt.I<NavigationHelper>().isLoggedIn = true;
+      await GetIt.I<UserHelper>().getSession();
 
       // final user = await account.get();
       //
@@ -83,6 +86,7 @@ class AuthRepository {
       throw ExceptionWithMessage(e.toString());
     } finally {
       GetIt.I<NavigationHelper>().isLoggedIn = false;
+      GetIt.I<UserHelper>().userId = null;
     }
   }
 }

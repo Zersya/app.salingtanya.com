@@ -103,6 +103,12 @@ class NavigationHelper {
           ),
         ],
       ),
+      GoRoute(
+        path: '/public-room/:rid',
+        name: 'PublicDetailRoomPage',
+        builder: (context, state) =>
+            DetailRoomPage(roomId: state.params['rid']!),
+      ),
     ],
   );
 }
