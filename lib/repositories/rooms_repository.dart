@@ -98,6 +98,27 @@ class RoomsRepository {
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
 
+    await ErrorWrapper.guard(() async {
+      for (final questionId in questions) {
+        final rawQuestion = await db.getDocument(
+          collectionId: kQuestionsCollectionId,
+          documentId: questionId,
+        );
+
+        final usedCount = rawQuestion.data['used_count'] as int;
+
+        final data = <String, dynamic>{
+          'used_count': usedCount + 1,
+        };
+
+        await db.updateDocument(
+          collectionId: kQuestionsCollectionId,
+          documentId: questionId,
+          data: data,
+        );
+      }
+    });
+
     return List<String>.from(result.data['member_names'] as List)
         .map((e) => e)
         .toList();
