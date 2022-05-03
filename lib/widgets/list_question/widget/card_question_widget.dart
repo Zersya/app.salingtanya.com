@@ -123,17 +123,17 @@ class QuestionCardWidget extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     _EmojiWidget(
-                      emoji: '😁',
+                      emoji: '\u{1F600}',
                       onTapEmoji: onTapEmoji,
                     ),
                     const SizedBox(width: 4),
                     _EmojiWidget(
-                      emoji: '😍',
+                      emoji: '\u{1F60D}',
                       onTapEmoji: onTapEmoji,
                     ),
                     const SizedBox(width: 4),
                     _EmojiWidget(
-                      emoji: '😂',
+                      emoji: '\u{1F602}',
                       onTapEmoji: onTapEmoji,
                     ),
                   ],
@@ -178,10 +178,10 @@ class _EmojiWidget extends ConsumerWidget {
               style: const TextStyle(fontSize: 12),
             ),
             const SizedBox(width: 8),
-            RichText(
-              text: TextSpan(
-                text: emoji,
-                style: const TextStyle(fontSize: 12),
+            Text(
+              emoji,
+              style: const TextStyle(
+                fontSize: 12,
               ),
             ),
           ],
