@@ -15,6 +15,7 @@ import 'package:app_salingtanya/utils/extensions/string_extension.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
 import 'package:app_salingtanya/utils/functions.dart';
 import 'package:app_salingtanya/widgets/custom_error_widget.dart';
+import 'package:app_salingtanya/widgets/list_question/widget/card_question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -167,16 +168,16 @@ class _DetailRoomBody extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: SizedBox(
-                height: 100,
+                height: 300,
                 child: stateQuestionRoom.maybeWhen(
                   idle: (data) => Column(
                     children: [
                       if (data != null)
-                        Text(
-                          data.value.capitalize,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        Flexible(
+                          child: QuestionCardWidget(
+                            question: data,
+                            isSelectable: false,
+                            width: 300,
                           ),
                         ),
                       if (isCreatedByMe)
