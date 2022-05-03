@@ -276,8 +276,9 @@ class _SetupRoomWidget extends ConsumerWidget {
             )
           else
             _TutorialItemWidget(
-              text:
-                  'Terdapat ${room.questionIds.length} pertanyaan terpilih, yang akan di acak beserta dengan nama kamu',
+              text: room.questionIds.isEmpty
+                  ? 'Room master belum memilih pertanyaan'
+                  : 'Terdapat ${room.questionIds.length} pertanyaan terpilih, yang akan di acak beserta dengan nama kamu',
             ),
           _TutorialItemWidget(
             text: 'Salin lalu bagikan room ini dengan teman kamu',
@@ -299,20 +300,27 @@ class _SetupRoomWidget extends ConsumerWidget {
               ),
             ),
           ),
-          _TutorialItemWidget(
-            text: 'Bila sudah mengerti,',
-            child: InkWell(
-              onTap: () {
-                ref.read(updateDetailRoomProvider.notifier).startRoom(room.id);
-              },
-              child: const Text(
-                'Ayo main!!',
-                style: TextStyle(
-                  color: ColorName.primary,
+          if (isCreatedByMe)
+            _TutorialItemWidget(
+              text: 'Bila sudah mengerti,',
+              child: InkWell(
+                onTap: () {
+                  ref
+                      .read(updateDetailRoomProvider.notifier)
+                      .startRoom(room.id);
+                },
+                child: const Text(
+                  'Ayo main!!',
+                  style: TextStyle(
+                    color: ColorName.primary,
+                  ),
                 ),
               ),
+            )
+          else
+            const _TutorialItemWidget(
+              text: 'Menunggu room master memulai!',
             ),
-          ),
         ],
       ),
     );
