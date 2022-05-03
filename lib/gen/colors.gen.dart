@@ -13,10 +13,10 @@ class ColorName {
   static const Color border = Color(0xFFC7C7C7);
   static const Color errorBackground = Color(0xFFFBCBCB);
   static const Color errorForeground = Color(0xFFEF3434);
-  static const Color info = Color(0xFF0094BC);
-  static const Color infoVariant = Color(0xFFB2EFFF);
-  static const Color primary = Color(0xFFEF3434);
-  static const Color primaryVariant = Color(0xFFFBCBCB);
+  static const Color info = Color(0xFFFFB2A6);
+  static const Color infoVariant = Color(0xFF9ADCFF);
+  static const Color primary = Color(0xFFFF8AAE);
+  static const Color primaryVariant = Color(0xFF9ADCFF);
   static const Color success = Color(0xFF2FA841);
   static const Color successVariant = Color(0xFFB8EBC0);
   static const Color textPrimary = Color(0xFF272727);

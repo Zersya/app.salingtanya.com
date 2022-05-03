@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#EF3434</color>
-    <color name="primary_variant">#FBCBCB</color>
+    <color name="primary">#FF8AAE</color>
+    <color name="primary_variant">#9ADCFF</color>
 
     <color name="warning">#F0CD4D</color>
 
-    <color name="info">#0094BC</color>
-    <color name="info_variant">#B2EFFF</color>
+    <color name="info">#FFB2A6</color>
+    <color name="info_variant">#9ADCFF</color>
 
     <color name="success">#2FA841</color>
     <color name="success_variant">#B8EBC0</color>

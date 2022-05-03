@@ -30,7 +30,7 @@ class ListQuestionWidget extends ConsumerWidget {
 
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: isGrid ? MediaQuery.of(context).size.height : 130,
+        height: isGrid ? MediaQuery.of(context).size.height : 250,
         child: listQuestion.when(
           idle: (data) {
             if (data.isEmpty) {
@@ -77,12 +77,9 @@ class ListQuestionWidget extends ConsumerWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final question = data[index];
-                return SizedBox(
-                  width: 220,
-                  child: _QuestionCardWidget(
-                    question: question,
-                    isSelectable: isSelectable,
-                  ),
+                return _QuestionCardWidget(
+                  question: question,
+                  isSelectable: isSelectable,
                 );
               },
             );
@@ -123,46 +120,103 @@ class _QuestionCardWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedQuestions = ref.watch(selectedQuestionsProvider);
+    final listQuestionCategory = ref
+            .watch(latestQuestionCategoriesProvider)
+            .mapOrNull(idle: (value) => value)
+            ?.data
+            .where((element) => question.categoryIds.contains(element.id)) ??
+        [];
 
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(4),
-          child: Card(
-            child: InkWell(
-              onTap: isSelectable
-                  ? () {
-                      final isExistsOnSelected =
-                          selectedQuestions.contains(question.id);
+    return SizedBox(
+      width: 200,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Card(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+              child: InkWell(
+                onTap: isSelectable
+                    ? () {
+                        final isExistsOnSelected =
+                            selectedQuestions.contains(question.id);
 
-                      late List<String> newSelectedQuestions;
-                      if (isExistsOnSelected) {
-                        newSelectedQuestions = selectedQuestions.toList()
-                          ..remove(question.id);
-                      } else {
-                        newSelectedQuestions = selectedQuestions.toList()
-                          ..add(question.id);
+                        late List<String> newSelectedQuestions;
+                        if (isExistsOnSelected) {
+                          newSelectedQuestions = selectedQuestions.toList()
+                            ..remove(question.id);
+                        } else {
+                          newSelectedQuestions = selectedQuestions.toList()
+                            ..add(question.id);
+                        }
+
+                        ref.read(selectedQuestionsProvider.notifier).state =
+                            newSelectedQuestions;
                       }
-
-                      ref.read(selectedQuestionsProvider.notifier).state =
-                          newSelectedQuestions;
-                    }
-                  : null,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    question.value.capitalize,
-                    textAlign: TextAlign.center,
+                    : null,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(12),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    // color: selectedQuestions.contains(question.id)
+                    //     ? ColorName.white
+                    //     : null,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      // color: ColorName.white,
+                      border: Border.all(color: ColorName.info),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                    ),
+                    height: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    alignment: Alignment.center,
+                    child: Text(
+                      question.value.capitalize,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        if (selectedQuestions.contains(question.id))
-          const Icon(Icons.check_circle, color: ColorName.success),
-      ],
+          Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: selectedQuestions.contains(question.id)
+                      ? ColorName.info
+                      : ColorName.white,
+                  border: Border.all(color: ColorName.info),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                child: Text(
+                  listQuestionCategory.map((e) => e.nameId).join(', '),
+                  style: TextStyle(
+                    color: selectedQuestions.contains(question.id)
+                        ? ColorName.white
+                        : ColorName.info,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
