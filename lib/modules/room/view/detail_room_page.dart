@@ -1,3 +1,4 @@
+import 'package:app_salingtanya/app/app.dart';
 import 'package:app_salingtanya/freezed/basic_detail_state.dart';
 import 'package:app_salingtanya/freezed/basic_form_state.dart';
 import 'package:app_salingtanya/gen/assets.gen.dart';
@@ -112,6 +113,22 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
                 );
               },
             ),
+            Consumer(
+              builder: (context, ref, child) {
+                final isDark = ref.read(themeIsDarkProvider);
+
+                return IconButton(
+                  icon: Icon(
+                    isDark ? Icons.brightness_2 : Icons.brightness_1,
+                  ),
+                  onPressed: () {
+                    final isDarkProvider =
+                        ref.read(themeIsDarkProvider.notifier);
+                    isDarkProvider.state = !isDarkProvider.state;
+                  },
+                );
+              },
+            )
           ],
         ),
         body: detailRoomState.maybeWhen(

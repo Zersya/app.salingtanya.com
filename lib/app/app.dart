@@ -10,6 +10,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +19,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 final appProvider = StateNotifierProvider.autoDispose<AppNotifier, BasicState>(
   (ref) => AppNotifier(),
 );
+
+final themeIsDarkProvider = StateProvider((ref) => false);
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -49,6 +52,10 @@ class _AppState extends ConsumerState<App> {
         .setSelfSigned();
 
     GetItContainer.initializeAppwrite(sdk);
+
+    final brightness = SchedulerBinding.instance!.window.platformBrightness;
+    final isDarkMode = brightness == Brightness.dark;
+    ref.read(themeIsDarkProvider.notifier).state = isDarkMode;
 
     super.initState();
   }
@@ -90,7 +97,7 @@ class _AppState extends ConsumerState<App> {
   }
 }
 
-class _AppBody extends StatelessWidget {
+class _AppBody extends ConsumerWidget {
   const _AppBody({
     Key? key,
     required this.colorSchemeLight,
@@ -101,8 +108,10 @@ class _AppBody extends StatelessWidget {
   final ColorScheme colorSchemeDark;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final appRouter = GetIt.I<NavigationHelper>().goRouter;
+    final isDarkMode = ref.watch(themeIsDarkProvider);
+
     final textThemeLight = GoogleFonts.openSansTextTheme(
       TextTheme(
         subtitle1: TextStyle(color: colorSchemeLight.onSurface),
@@ -125,6 +134,38 @@ class _AppBody extends StatelessWidget {
       ),
     );
 
+    final theme = isDarkMode
+        ? ThemeData(
+            appBarTheme: const AppBarTheme(
+              color: ColorName.primary,
+            ),
+            colorScheme: colorSchemeDark,
+            primaryColor: colorSchemeDark.primary,
+            backgroundColor: colorSchemeDark.background,
+            textTheme: textThemeDark,
+            buttonTheme: ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          )
+        : ThemeData(
+            appBarTheme: const AppBarTheme(
+              color: ColorName.primary,
+            ),
+            colorScheme: colorSchemeLight,
+            primaryColor: colorSchemeLight.primary,
+            backgroundColor: colorSchemeLight.background,
+            textTheme: textThemeLight,
+            buttonTheme: ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          );
+
     return DevicePreview(
       // ignore: avoid_redundant_argument_values
       enabled: kDebugMode,
@@ -146,36 +187,7 @@ class _AppBody extends StatelessWidget {
           ],
           background: Container(color: ColorName.background),
         ),
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            color: ColorName.primary,
-          ),
-          colorScheme: colorSchemeLight,
-          primaryColor: colorSchemeLight.primary,
-          backgroundColor: colorSchemeLight.background,
-          textTheme: textThemeLight,
-          buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        ),
-        darkTheme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            color: ColorName.primary,
-          ),
-          colorScheme: colorSchemeDark,
-          primaryColor: colorSchemeDark.primary,
-          backgroundColor: colorSchemeDark.background,
-          textTheme: textThemeDark,
-          buttonTheme: ButtonThemeData(
-            textTheme: ButtonTextTheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        ),
+        theme: theme,
       ),
     );
   }

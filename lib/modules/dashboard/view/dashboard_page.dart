@@ -1,3 +1,4 @@
+import 'package:app_salingtanya/app/app.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/repositories/auth_repository.dart';
@@ -75,6 +76,22 @@ class DashboardPage extends StatelessWidget {
                   GetIt.I<NavigationHelper>().goNamed('AuthPage');
                 },
               ),
+              Consumer(
+                builder: (context, ref, child) {
+                  final isDark = ref.read(themeIsDarkProvider);
+
+                  return IconButton(
+                    icon: Icon(
+                      isDark ? Icons.brightness_2 : Icons.brightness_1,
+                    ),
+                    onPressed: () {
+                      final isDarkProvider =
+                          ref.read(themeIsDarkProvider.notifier);
+                      isDarkProvider.state = !isDarkProvider.state;
+                    },
+                  );
+                },
+              )
             ],
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
