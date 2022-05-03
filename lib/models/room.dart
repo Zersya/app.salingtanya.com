@@ -20,7 +20,7 @@ class Room {
     this.startedAt,
     this.writeBy,
     this.indexSession,
-    this.indexShuffle,
+    this.indexRaffle,
     this.activeQuestionId,
   );
 
@@ -64,8 +64,8 @@ class Room {
   @JsonKey(name: 'index_session')
   final int indexSession;
 
-  @JsonKey(name: 'index_shuffle')
-  final int indexShuffle;
+  @JsonKey(name: 'index_raffle')
+  final int indexRaffle;
 
   @JsonKey(name: 'active_question_id')
   final String? activeQuestionId;

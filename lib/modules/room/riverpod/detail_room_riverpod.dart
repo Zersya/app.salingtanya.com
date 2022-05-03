@@ -49,6 +49,12 @@ class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
       ref.read(selectedRoomProvider.notifier).state = result;
       ref.read(selectedQuestionsProvider.notifier).state = result.questionIds;
 
+      if (result.activeQuestionId != null) {
+        await ref
+            .read(questionRoomProvider.notifier)
+            .getQuestion(result.activeQuestionId!);
+      }
+
       state = BasicDetailState<Room?>.idle(result);
     } catch (e) {
       state = BasicDetailState<Room?>.error(e.toString());

@@ -38,11 +38,14 @@ final updateDetailRoomProvider =
 );
 
 final detailRoomProvider = StateNotifierProvider.autoDispose<DetailRoomNotifier,
-    BasicDetailState<Room?>>(DetailRoomNotifier.new);
+    BasicDetailState<Room?>>(
+  DetailRoomNotifier.new,
+);
 
-final questionRoomProvider = StateNotifierProvider.autoDispose<
-    QuestionRoomNotifier,
-    BasicDetailState<Question?>>(QuestionRoomNotifier.new);
+final questionRoomProvider =
+    StateNotifierProvider<QuestionRoomNotifier, BasicDetailState<Question?>>(
+  QuestionRoomNotifier.new,
+);
 
 class DetailRoomPage extends ConsumerStatefulWidget {
   const DetailRoomPage({Key? key, required this.roomId}) : super(key: key);
@@ -67,6 +70,7 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
   @override
   void dispose() {
     ref.read(detailRoomProvider.notifier).close();
+    ref.read(questionRoomProvider.notifier).dispose();
     super.dispose();
   }
 
@@ -170,9 +174,8 @@ class _DetailRoomBody extends ConsumerWidget {
                               ref
                                   .read(updateDetailRoomProvider.notifier)
                                   .updateActiveQuestionId(
+                                    room,
                                     result,
-                                    room.indexShuffle + 1,
-                                    room.id,
                                   );
                             },
                             child: const Text('Dapatkan pertanyaan'),

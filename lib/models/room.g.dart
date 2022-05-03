@@ -22,7 +22,7 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
           : DateTime.parse(json['started_at'] as String),
       (json[r'$write'] as List<dynamic>).map((e) => e as String).toList(),
       json['index_session'] as int,
-      json['index_shuffle'] as int,
+      json['index_raffle'] as int,
       json['active_question_id'] as String?,
     );
 
@@ -40,6 +40,6 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'started_at': instance.startedAt?.toIso8601String(),
       r'$write': instance.writeBy,
       'index_session': instance.indexSession,
-      'index_shuffle': instance.indexShuffle,
+      'index_raffle': instance.indexRaffle,
       'active_question_id': instance.activeQuestionId,
     };

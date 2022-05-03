@@ -1,4 +1,5 @@
 import 'package:app_salingtanya/freezed/basic_form_state.dart';
+import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/repositories/rooms_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -51,14 +52,13 @@ class UpdateDetailRoomNotifier extends StateNotifier<BasicFormState> {
   }
 
   Future updateActiveQuestionId(
+    Room room,
     String questionId,
-    int indexShuffle,
-    String docId,
   ) async {
     try {
       state = const BasicFormState.loading();
 
-      await _repo.updateActiveQuestionId(questionId, indexShuffle, docId);
+      await _repo.updateActiveQuestionId(room, questionId, room.id);
       onUpdate?.call();
 
       state = const BasicFormState.succeed();

@@ -142,14 +142,24 @@ class RoomsRepository {
   }
 
   Future<void> updateActiveQuestionId(
+    Room room,
     String questionId,
-    int indexShuffle,
     String docId,
   ) async {
+    var indexRaffle = room.indexRaffle + 1;
+
+    var indexSession = room.indexSession;
+
+    if (indexRaffle == room.memberNames.length - 1) {
+      indexRaffle = 0;
+      indexSession++;
+    }
+
     final now = DateTime.now();
     final data = <String, dynamic>{
       'active_question_id': questionId,
-      'index_shuffle': indexShuffle,
+      'index_raffle': indexRaffle,
+      'index_session': indexSession,
       'updated_at': now.toIso8601String(),
     };
 
