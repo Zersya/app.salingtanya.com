@@ -10,13 +10,18 @@ class ColorName {
   ColorName._();
 
   static const Color background = Color(0xFFF9F9F9);
+  static const Color backgroundDark = Color(0xFFB4A5A5);
   static const Color border = Color(0xFFC7C7C7);
   static const Color errorBackground = Color(0xFFFBCBCB);
   static const Color errorForeground = Color(0xFFEF3434);
   static const Color info = Color(0xFFFFB2A6);
+  static const Color infoDark = Color(0xFF595B83);
   static const Color infoVariant = Color(0xFF9ADCFF);
+  static const Color infoVariantDark = Color(0xFF595B83);
   static const Color primary = Color(0xFFFF8AAE);
+  static const Color primaryDark = Color(0xFFF4ABC4);
   static const Color primaryVariant = Color(0xFF9ADCFF);
+  static const Color primaryVariantDark = Color(0xFF595B83);
   static const Color success = Color(0xFF2FA841);
   static const Color successVariant = Color(0xFFB8EBC0);
   static const Color textPrimary = Color(0xFF272727);

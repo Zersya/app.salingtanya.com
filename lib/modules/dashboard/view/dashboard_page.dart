@@ -1,4 +1,3 @@
-import 'package:app_salingtanya/app/app.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/repositories/auth_repository.dart';
@@ -7,6 +6,7 @@ import 'package:app_salingtanya/widgets/list_question/widget/create_question_wid
 import 'package:app_salingtanya/widgets/list_question/widget/list_question_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/create_room_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/list_room_widget.dart';
+import 'package:app_salingtanya/widgets/toggle_darkmode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -76,22 +76,7 @@ class DashboardPage extends StatelessWidget {
                   GetIt.I<NavigationHelper>().goNamed('AuthPage');
                 },
               ),
-              Consumer(
-                builder: (context, ref, child) {
-                  final isDark = ref.read(themeIsDarkProvider);
-
-                  return IconButton(
-                    icon: Icon(
-                      isDark ? Icons.brightness_2 : Icons.brightness_1,
-                    ),
-                    onPressed: () {
-                      final isDarkProvider =
-                          ref.read(themeIsDarkProvider.notifier);
-                      isDarkProvider.state = !isDarkProvider.state;
-                    },
-                  );
-                },
-              )
+              const ToggleDarkModeWidget(),
             ],
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 20)),

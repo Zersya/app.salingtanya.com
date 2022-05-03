@@ -16,6 +16,7 @@ import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
 import 'package:app_salingtanya/utils/functions.dart';
 import 'package:app_salingtanya/widgets/custom_error_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/card_question_widget.dart';
+import 'package:app_salingtanya/widgets/toggle_darkmode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -114,22 +115,7 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
                 );
               },
             ),
-            Consumer(
-              builder: (context, ref, child) {
-                final isDark = ref.read(themeIsDarkProvider);
-
-                return IconButton(
-                  icon: Icon(
-                    isDark ? Icons.brightness_2 : Icons.brightness_1,
-                  ),
-                  onPressed: () {
-                    final isDarkProvider =
-                        ref.read(themeIsDarkProvider.notifier);
-                    isDarkProvider.state = !isDarkProvider.state;
-                  },
-                );
-              },
-            )
+            const ToggleDarkModeWidget(),
           ],
         ),
         body: detailRoomState.maybeWhen(

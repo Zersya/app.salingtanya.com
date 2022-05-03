@@ -4,6 +4,8 @@ const kQuestionsCollectionId = '6261dc565dc7276a20d0';
 const kQuestionCategoriesCollectionId = '6261de7869623916a7b6';
 
 
+
+const kIsDarkMode = 'isDarkMode';
 const kSessionId = 'session_id';
 const kAccessToken = 'token';
 const kRefreshToken = 'refresh_token';

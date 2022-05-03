@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary">#FF8AAE</color>
+    <color name="primary_dark">#F4ABC4</color>
+
     <color name="primary_variant">#9ADCFF</color>
+    <color name="primary_variant_dark">#595B83</color>
 
     <color name="warning">#F0CD4D</color>
 
     <color name="info">#FFB2A6</color>
+    <color name="info_dark">#595B83</color>
+
     <color name="info_variant">#9ADCFF</color>
+    <color name="info_variant_dark">#595B83</color>
 
     <color name="success">#2FA841</color>
     <color name="success_variant">#B8EBC0</color>
@@ -20,6 +26,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="background">#F9F9F9</color>
+    <color name="background_dark">#B4A5A5</color>
 
 
 </resources>

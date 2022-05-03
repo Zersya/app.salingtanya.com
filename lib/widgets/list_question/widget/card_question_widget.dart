@@ -71,7 +71,7 @@ class QuestionCardWidget extends ConsumerWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       // color: ColorName.white,
-                      border: Border.all(color: ColorName.info),
+                      border: Border.all(color: Theme.of(context).primaryColor),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(8),
                       ),
@@ -95,9 +95,9 @@ class QuestionCardWidget extends ConsumerWidget {
               child: Container(
                 decoration: BoxDecoration(
                   color: selectedQuestions.contains(question.id)
-                      ? ColorName.info
+                      ? Theme.of(context).primaryColor
                       : ColorName.white,
-                  border: Border.all(color: ColorName.info),
+                  border: Border.all(color: Theme.of(context).primaryColor),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -106,7 +106,7 @@ class QuestionCardWidget extends ConsumerWidget {
                   style: TextStyle(
                     color: selectedQuestions.contains(question.id)
                         ? ColorName.white
-                        : ColorName.info,
+                        : Theme.of(context).primaryColor,
                   ),
                 ),
               ),

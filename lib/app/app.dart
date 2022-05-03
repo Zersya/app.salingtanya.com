@@ -5,6 +5,7 @@ import 'package:app_salingtanya/freezed/basic_state.dart';
 import 'package:app_salingtanya/gen/assets.gen.dart';
 import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
+import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/get_it.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:device_preview/device_preview.dart';
@@ -15,6 +16,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final appProvider = StateNotifierProvider.autoDispose<AppNotifier, BasicState>(
   (ref) => AppNotifier(),
@@ -56,6 +58,10 @@ class _AppState extends ConsumerState<App> {
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     final isDarkMode = brightness == Brightness.dark;
     ref.read(themeIsDarkProvider.notifier).state = isDarkMode;
+    SharedPreferences.getInstance().then((pref) {
+      final isDarkModePref = pref.getBool(kIsDarkMode) ?? isDarkMode;
+      ref.read(themeIsDarkProvider.notifier).state = isDarkModePref;
+    });
 
     super.initState();
   }
@@ -82,7 +88,17 @@ class _AppState extends ConsumerState<App> {
     );
 
     final _colorSchemeDark = _colorSchemeLight.copyWith(
+      primary: ColorName.primaryDark,
+      primaryContainer: ColorName.primaryVariantDark,
+      secondary: ColorName.infoDark,
+      secondaryContainer: ColorName.infoVariantDark,
+      outline: ColorName.border,
+      error: ColorName.errorBackground,
+      surface: ColorName.white,
+      onPrimary: ColorName.white,
+      onSecondary: ColorName.primaryDark,
       brightness: Brightness.dark,
+      background: ColorName.backgroundDark,
       onSurface: ColorName.white,
       onBackground: ColorName.white,
     );
@@ -137,7 +153,7 @@ class _AppBody extends ConsumerWidget {
     final theme = isDarkMode
         ? ThemeData(
             appBarTheme: const AppBarTheme(
-              color: ColorName.primary,
+              color: ColorName.primaryDark,
             ),
             colorScheme: colorSchemeDark,
             primaryColor: colorSchemeDark.primary,
