@@ -1,4 +1,7 @@
+import 'package:app_salingtanya/freezed/basic_state.dart';
+import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
+import 'package:app_salingtanya/modules/dashboard/riverpods/create_feedback_riverpod.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/repositories/auth_repository.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
@@ -12,6 +15,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+part 'widgets/create_feedback_widget.dart';
+
+final createFeedbackProvider =
+    StateNotifierProvider.autoDispose<CreateFeedbackNotifier, BasicState>(
+  (ref) => CreateFeedbackNotifier(),
+);
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -55,42 +65,21 @@ class DashboardPage extends StatelessWidget {
                 backgroundColor: isLight ? Colors.white : Colors.black87,
                 label: 'Create Question',
                 onTap: () {
-                  final controller = TextEditingController();
-                  CreateQuestionWidget(controller: controller)
+                  CreateQuestionWidget(controller: TextEditingController())
                       .showCustomDialog<void>(context);
                 },
               ),
               SpeedDialChild(
-                child: const Icon(Icons.question_mark),
+                child: const Icon(Icons.feedback),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
                 label: 'Feedback',
-                onTap: () async {
-                  // showdialog form
-                  await showDialog<void>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Feedback'),
-                      content: TextField(
-                        minLines: 4,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Send'),
-                        ),
-                      ],
-                    ),
-                  );
+                onTap: () {
+                  _CreateFeedbackWidget(controller: TextEditingController())
+                      .showCustomDialog<void>(context);
                 },
               ),
               SpeedDialChild(
-                child: const Icon(Icons.question_mark),
+                child: const Icon(Icons.chat_bubble),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
                 label: 'Chat',
                 onTap: () async {
