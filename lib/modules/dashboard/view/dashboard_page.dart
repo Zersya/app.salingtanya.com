@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -57,6 +58,44 @@ class DashboardPage extends StatelessWidget {
                   final controller = TextEditingController();
                   CreateQuestionWidget(controller: controller)
                       .showCustomDialog<void>(context);
+                },
+              ),
+              SpeedDialChild(
+                child: const Icon(Icons.question_mark),
+                backgroundColor: isLight ? Colors.white : Colors.black87,
+                label: 'Feedback',
+                onTap: () async {
+                  // showdialog form
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Feedback'),
+                      content: TextField(
+                        minLines: 4,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Send'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              SpeedDialChild(
+                child: const Icon(Icons.question_mark),
+                backgroundColor: isLight ? Colors.white : Colors.black87,
+                label: 'Chat',
+                onTap: () async {
+                  final url = Uri.parse('https://chat.salingtanya.com/');
+                  await launchUrl(url);
                 },
               ),
             ],
