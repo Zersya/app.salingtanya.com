@@ -19,7 +19,8 @@ class CreateQuestionWidget extends ConsumerWidget {
       return;
     }
 
-    final selected = ref.read(selectedQuestionCategoryProvider.notifier).state;
+    final selected =
+        ref.read(selectedFormQuestionCategoryProvider.notifier).state;
 
     if (selected == null) {
       GetIt.I<FlashMessageHelper>().showError('Please select a category');
@@ -64,7 +65,7 @@ class CreateQuestionWidget extends ConsumerWidget {
             builder: (_, ref, __) {
               final questionCategories = ref.watch(questionCategoriesProvider);
               final selectedCategory =
-                  ref.watch(selectedQuestionCategoryProvider);
+                  ref.watch(selectedFormQuestionCategoryProvider);
 
               return questionCategories.maybeWhen(
                 idle: (data) => DropdownButtonFormField<QuestionCategory>(
@@ -84,7 +85,7 @@ class CreateQuestionWidget extends ConsumerWidget {
                       )
                       .toList(),
                   onChanged: (value) => ref
-                      .read(selectedQuestionCategoryProvider.notifier)
+                      .read(selectedFormQuestionCategoryProvider.notifier)
                       .state = value,
                 ),
                 orElse: () => const LinearProgressIndicator(),

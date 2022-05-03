@@ -6,6 +6,7 @@ import 'package:app_salingtanya/models/question_category.dart';
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/modules/auth/riverpods/auth_riverpod.dart';
 import 'package:app_salingtanya/modules/dashboard/riverpods/question_categories_riverpod.dart';
+import 'package:app_salingtanya/widgets/list_category/riverpod/list_question_category_riverpod.dart';
 import 'package:app_salingtanya/widgets/list_question/riverpod/create_question_riverpod.dart';
 import 'package:app_salingtanya/widgets/list_question/riverpod/list_question_riverpod.dart';
 import 'package:app_salingtanya/widgets/room/riverpod/create_room_riverpod.dart';
@@ -30,6 +31,11 @@ final popularQuestionsProvider =
 final latestAddedQuestionsProvider =
     StateNotifierProvider<ListQuestionNotifier, BasicListState<Question>>(
   (ref) => ListQuestionNotifier()..getQuestions(),
+);
+
+final latestQuestionCategoriesProvider = StateNotifierProvider<
+    ListQuestionCategoryNotifier, BasicListState<QuestionCategory>>(
+  (ref) => ListQuestionCategoryNotifier()..getCategories(),
 );
 
 final createQuestionProvider =
@@ -59,7 +65,7 @@ final createRoomProvider =
   ),
 );
 
-final selectedQuestionCategoryProvider =
+final selectedFormQuestionCategoryProvider =
     StateProvider.autoDispose<QuestionCategory?>((ref) => null);
 
 final questionCategoriesProvider = StateNotifierProvider.autoDispose<
@@ -70,5 +76,8 @@ final questionCategoriesProvider = StateNotifierProvider.autoDispose<
 final selectedRoomProvider = StateProvider<Room?>((ref) => null);
 
 final selectedQuestionsProvider = StateProvider<List<String>>((ref) => []);
+
+final selectedQuestionCategoryProvider =
+    StateProvider<List<String>>((ref) => []);
 
 final activeQuestionProvider = StateProvider<Question?>((ref) => null);

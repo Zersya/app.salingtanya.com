@@ -1,6 +1,7 @@
 import 'package:app_salingtanya/modules/room/view/detail_room_page.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
+import 'package:app_salingtanya/widgets/list_category/view/list_question_category_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/create_question_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/list_question_widget.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,19 @@ class SelectQuestionsPage extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           slivers: [
             SliverToBoxAdapter(child: SizedBox(height: 20)),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: Text(
+                  'Questions by Categories',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              sliver: ListQuestionCategoryWidget(),
+            ),
             SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverToBoxAdapter(

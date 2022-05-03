@@ -47,7 +47,7 @@ class QuestionsRepository {
         queries: <dynamic>[
           if (isPopular) Query.greaterEqual('used_count', 10),
         ],
-        orderTypes: <String>[if (isPopular) 'DESC'],
+        orderTypes: <String>['DESC'],
         orderAttributes: <String>[if (isPopular) 'used_count'],
       ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
