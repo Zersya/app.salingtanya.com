@@ -1,4 +1,3 @@
-import 'package:app_salingtanya/app/app.dart';
 import 'package:app_salingtanya/freezed/basic_detail_state.dart';
 import 'package:app_salingtanya/freezed/basic_form_state.dart';
 import 'package:app_salingtanya/gen/assets.gen.dart';
@@ -164,6 +163,22 @@ class _DetailRoomBody extends ConsumerWidget {
                             question: data,
                             isSelectable: false,
                             width: 300,
+                            onTapEmoji: (value) {
+                              final newEmojis = room.activeQuestionEmojis
+                                  .toList()
+                                ..add(value);
+
+                              final jsonRoom = room.toJson();
+                              final updatedRoom = Room.fromJson(jsonRoom)
+                                ..activeQuestionEmojis = newEmojis;
+
+                              ref.read(selectedRoomProvider.notifier).state =
+                                  updatedRoom;
+
+                              ref
+                                  .read(updateDetailRoomProvider.notifier)
+                                  .updateActiveQuestionEmojis(room, newEmojis);
+                            },
                           ),
                         ),
                       if (isCreatedByMe)

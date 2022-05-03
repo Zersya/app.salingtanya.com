@@ -24,6 +24,9 @@ Room _$RoomFromJson(Map<String, dynamic> json) => Room(
       json['index_session'] as int,
       json['index_raffle'] as int,
       json['active_question_id'] as String?,
+      (json['active_question_emojis'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
@@ -42,4 +45,5 @@ Map<String, dynamic> _$RoomToJson(Room instance) => <String, dynamic>{
       'index_session': instance.indexSession,
       'index_raffle': instance.indexRaffle,
       'active_question_id': instance.activeQuestionId,
+      'active_question_emojis': instance.activeQuestionEmojis,
     };

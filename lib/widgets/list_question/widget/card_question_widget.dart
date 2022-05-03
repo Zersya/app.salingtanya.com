@@ -10,12 +10,14 @@ class QuestionCardWidget extends ConsumerWidget {
     Key? key,
     required this.question,
     required this.isSelectable,
+    this.onTapEmoji,
     this.width = 200,
   }) : super(key: key);
 
   final Question question;
   final bool isSelectable;
   final double width;
+  final Function(String)? onTapEmoji;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,8 +113,79 @@ class QuestionCardWidget extends ConsumerWidget {
                 ),
               ),
             ),
-          )
+          ),
+          if (onTapEmoji != null)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 32, right: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _EmojiWidget(
+                      emoji: '😁',
+                      onTapEmoji: onTapEmoji,
+                    ),
+                    const SizedBox(width: 4),
+                    _EmojiWidget(
+                      emoji: '😍',
+                      onTapEmoji: onTapEmoji,
+                    ),
+                    const SizedBox(width: 4),
+                    _EmojiWidget(
+                      emoji: '😂',
+                      onTapEmoji: onTapEmoji,
+                    ),
+                  ],
+                ),
+              ),
+            )
         ],
+      ),
+    );
+  }
+}
+
+class _EmojiWidget extends ConsumerWidget {
+  const _EmojiWidget({
+    Key? key,
+    required this.onTapEmoji,
+    required this.emoji,
+  }) : super(key: key);
+
+  final Function(String p1)? onTapEmoji;
+  final String emoji;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emojis = ref.watch(selectedRoomProvider)?.activeQuestionEmojis ?? [];
+
+    return InkWell(
+      onTap: () => onTapEmoji?.call(emoji),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).backgroundColor,
+          borderRadius: const BorderRadius.all(Radius.circular(48)),
+        ),
+        child: Row(
+          children: [
+            Text(
+              emojis.where((element) => element == emoji).length.toString(),
+              style: const TextStyle(fontSize: 12),
+            ),
+            const SizedBox(width: 8),
+            RichText(
+              text: TextSpan(
+                text: emoji,
+                style: const TextStyle(fontSize: 12),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

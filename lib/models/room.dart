@@ -22,6 +22,7 @@ class Room {
     this.indexSession,
     this.indexRaffle,
     this.activeQuestionId,
+    this.activeQuestionEmojis,
   );
 
   factory Room.fromJson(Map<String, dynamic> json) => _$RoomFromJson(json);
@@ -69,6 +70,9 @@ class Room {
 
   @JsonKey(name: 'active_question_id')
   final String? activeQuestionId;
+
+  @JsonKey(name: 'active_question_emojis')
+  List<String> activeQuestionEmojis;
 
   bool isCreatedByMe() =>
       writeBy.contains('user:${GetIt.I<UserHelper>().userId}');

@@ -158,8 +158,29 @@ class RoomsRepository {
     final now = DateTime.now();
     final data = <String, dynamic>{
       'active_question_id': questionId,
+      'active_question_emojis': <String>[],
       'index_raffle': indexRaffle,
       'index_session': indexSession,
+      'updated_at': now.toIso8601String(),
+    };
+
+    await ErrorWrapper.guard(
+      () => db.updateDocument(
+        collectionId: kRoomsCollectionId,
+        documentId: docId,
+        data: data,
+      ),
+      onError: (e) => throw ExceptionWithMessage(e.toString()),
+    );
+  }
+
+  Future<void> updateActiveQuestionEmojis(
+    List<String> emojis,
+    String docId,
+  ) async {
+    final now = DateTime.now();
+    final data = <String, dynamic>{
+      'active_question_emojis': emojis,
       'updated_at': now.toIso8601String(),
     };
 
