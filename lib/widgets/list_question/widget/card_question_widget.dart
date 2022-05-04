@@ -78,7 +78,7 @@ class QuestionCardWidget extends ConsumerWidget {
                     height: double.infinity,
                     padding: const EdgeInsets.all(16),
                     alignment: Alignment.center,
-                    child: Text(
+                    child: SelectableText(
                       question.value.capitalize,
                       textAlign: TextAlign.center,
                     ),
