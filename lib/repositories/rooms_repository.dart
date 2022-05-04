@@ -1,3 +1,4 @@
+import 'package:app_salingtanya/helpers/user_helper.dart';
 import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/exceptions.dart';
@@ -42,11 +43,19 @@ class RoomsRepository {
 
   Future<List<Room>> getRooms() async {
     final result = await ErrorWrapper.guard(
-      () => db.listDocuments(collectionId: kRoomsCollectionId),
+      () => db.listDocuments(
+        collectionId: kRoomsCollectionId,
+        limit: 100,
+        orderTypes: <String>['DESC'],
+      ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
+    final session = await GetIt.I<UserHelper>().getSession();
 
-    return result.documents.reversed.map((e) => Room.fromJson(e.data)).toList();
+    return result.documents
+        .where((element) => element.$write.contains('user:${session.userId}'))
+        .map((e) => Room.fromJson(e.data))
+        .toList();
   }
 
   Future<Room> getRoom(String id) async {
