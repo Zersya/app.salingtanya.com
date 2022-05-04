@@ -62,7 +62,7 @@ dev_dependencies:
 flutter_icons:
   android: 'launcher_icon'
   ios: true
-  image_path: 'assets/images/logo-indieapps.png'
+  image_path: 'assets/images/logo-salingtanya.png'
 
 flutter_gen:
   integrations:

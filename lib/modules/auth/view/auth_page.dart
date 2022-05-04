@@ -16,34 +16,13 @@ class AuthPage extends StatelessWidget {
           SizedBox(
             width: 280,
             height: 180,
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 0,
-                  child: Assets.images.logoIndieapps.image(
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                const Positioned(
-                  top: 42,
-                  right: 0,
-                  left: 0,
-                  child: Icon(Icons.favorite, color: Colors.red),
-                ),
-                const Positioned(
-                  top: 32,
-                  right: 0,
-                  child: SizedBox(
-                    width: 70,
-                    height: 70,
-                    child: FlutterLogo(),
-                  ),
-                ),
-              ],
+            child: Assets.images.logoSalingtanya.image(
+              width: 80,
+              height: 80,
+              fit: BoxFit.contain,
             ),
           ),
+          const SizedBox(height: 8),
           const _SignInWidget(),
         ],
       ),
@@ -62,6 +41,13 @@ class _SignInWidget extends ConsumerWidget {
       idle: () => Center(
         child: SignInButton(
           Buttons.Google,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                8,
+              ),
+            ),
+          ),
           text: 'Sign in with Google',
           onPressed: () async {
             await ref.read(authProvider.notifier).signInGoogle();
