@@ -13,6 +13,7 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       json['used_count'] as int,
       (json['category_ids'] as List<dynamic>).map((e) => e as String).toList(),
       DateTime.parse(json['created_at'] as String),
+      json['language'] as String? ?? 'id',
     );
 
 Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'used_count': instance.usedCount,
       'category_ids': instance.categoryIds,
       'created_at': instance.createdAt.toIso8601String(),
+      'language': instance.language,
     };

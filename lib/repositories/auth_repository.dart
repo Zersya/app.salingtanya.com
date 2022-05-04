@@ -2,15 +2,17 @@ import 'dart:io';
 
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/helpers/user_helper.dart';
+import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/exceptions.dart';
 import 'package:app_salingtanya/utils/functions.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   final account = GetIt.I<Account>();
-  final teams = GetIt.I<Teams>();
+  final db = GetIt.I<Database>();
 
   Future signInAnonymously() async {
     try {
@@ -51,17 +53,41 @@ class AuthRepository {
         failure: redirectUrl,
       );
       GetIt.I<NavigationHelper>().isLoggedIn = true;
-      await GetIt.I<UserHelper>().getSession();
+      final session = await GetIt.I<UserHelper>().getSession();
+      final prefs = GetIt.I<SharedPreferences>();
+      final now = DateTime.now();
 
-      // final user = await account.get();
-      //
-      // await teams.createMembership(
-      //   teamId: kTeamsId,
-      //   email: user.email,
-      //   roles: <String>['member'],
-      //   url: defaultUrl,
-      // );
+      await db.getDocument(
+        collectionId: kUsersCollectionId,
+        documentId: session.userId,
+      );
+
+      await db.updateDocument(
+        collectionId: kUsersCollectionId,
+        documentId: session.userId,
+        data: <String, dynamic>{
+          'active_session_id': session.$id,
+          'last_login_at': now.toIso8601String(),
+          'default_language': prefs.getString(kDefaultLanguage) ?? 'id',
+        },
+      );
     } on AppwriteException catch (e) {
+      if (e.type == AppwriteExceptionType.kDocumentNotFound) {
+        final session = await GetIt.I<UserHelper>().getSession();
+        final prefs = GetIt.I<SharedPreferences>();
+        final now = DateTime.now();
+
+        await db.createDocument(
+          collectionId: kUsersCollectionId,
+          documentId: session.userId,
+          data: <String, dynamic>{
+            'active_session_id': session.$id,
+            'last_login_at': now.toIso8601String(),
+            'default_language': prefs.getString(kDefaultLanguage) ?? 'id',
+          },
+        );
+        return;
+      }
       if (e.type == AppwriteExceptionType.kUserSessionExist) {
         return;
       }

@@ -4,6 +4,7 @@ import 'package:app_salingtanya/helpers/user_helper.dart';
 import 'package:app_salingtanya/utils/get_it.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppNotifier extends StateNotifier<BasicState> {
   AppNotifier() : super(const BasicState.loading()) {
@@ -13,7 +14,10 @@ class AppNotifier extends StateNotifier<BasicState> {
   Future _init() async {
     state = const BasicState.loading();
 
-    GetItContainer.initializeNavigation(isLoggedIn: false);
+    GetItContainer.initializeNavigation(
+      isLoggedIn: false,
+      sharedPreferences: await SharedPreferences.getInstance(),
+    );
 
     late bool isLoggedIn;
 

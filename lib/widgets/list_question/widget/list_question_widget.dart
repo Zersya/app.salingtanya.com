@@ -104,7 +104,7 @@ class ListQuestionWidget extends ConsumerWidget {
                       ? popularQuestionsProvider.notifier
                       : latestAddedQuestionsProvider.notifier,
                 )
-                .getQuestions(),
+                .getQuestions(isPopular: isPopular),
           ),
         ),
       ),

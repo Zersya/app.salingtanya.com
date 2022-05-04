@@ -58,6 +58,7 @@ class _AppState extends ConsumerState<App> {
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     final isDarkMode = brightness == Brightness.dark;
     ref.read(themeIsDarkProvider.notifier).state = isDarkMode;
+   
     SharedPreferences.getInstance().then((pref) {
       final isDarkModePref = pref.getBool(kIsDarkMode) ?? isDarkMode;
       ref.read(themeIsDarkProvider.notifier).state = isDarkModePref;

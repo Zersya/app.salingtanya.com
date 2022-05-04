@@ -9,7 +9,7 @@ class UserHelper {
     return GetIt.I<Account>().get();
   }
 
-  Future getSession() async {
+  Future<Session> getSession() async {
     final account = await GetIt.I<Account>().getSession(sessionId: 'current');
     userId = account.userId;
 

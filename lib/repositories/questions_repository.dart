@@ -7,12 +7,14 @@ import 'package:app_salingtanya/utils/exceptions.dart';
 import 'package:app_salingtanya/utils/wrappers/error_wrapper.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestionsRepository {
   final db = GetIt.I<Database>();
 
   Future createQuestion(String question, List<String> categoryIds) async {
     final now = DateTime.now();
+    final prefs = await SharedPreferences.getInstance();
 
     await ErrorWrapper.guard(
       () => db.createDocument(
@@ -22,6 +24,7 @@ class QuestionsRepository {
           'value': question,
           'category_ids': categoryIds,
           'created_at': now.toIso8601String(),
+          'language': prefs.getString(kDefaultLanguage) ?? 'id'
         },
       ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
@@ -41,10 +44,12 @@ class QuestionsRepository {
   }
 
   Future<List<Question>> getQuestions({required bool isPopular}) async {
+    final prefs = await SharedPreferences.getInstance();
     final result = await ErrorWrapper.guard(
       () => db.listDocuments(
         collectionId: kQuestionsCollectionId,
         queries: <dynamic>[
+          Query.equal('language', prefs.getString(kDefaultLanguage) ?? 'id'),
           if (isPopular) Query.greaterEqual('used_count', 10),
         ],
         orderTypes: <String>['DESC'],

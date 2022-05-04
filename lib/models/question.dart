@@ -11,6 +11,7 @@ class Question {
     this.usedCount,
     this.categoryIds,
     this.createdAt,
+    this.language,
   );
 
   factory Question.fromJson(Map<String, dynamic> json) =>
@@ -34,4 +35,7 @@ class Question {
 
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
+
+  @JsonKey(name: 'language', defaultValue: 'id')
+  final String language;
 }

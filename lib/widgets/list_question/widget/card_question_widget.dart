@@ -1,9 +1,12 @@
 import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/models/question.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestionCardWidget extends ConsumerWidget {
   const QuestionCardWidget({
@@ -37,9 +40,7 @@ class QuestionCardWidget extends ConsumerWidget {
             padding: const EdgeInsets.all(8),
             child: Card(
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: InkWell(
                 onTap: isSelectable
@@ -66,17 +67,13 @@ class QuestionCardWidget extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
                   ),
                   child: Container(
                     decoration: BoxDecoration(
                       // color: ColorName.white,
                       border: Border.all(color: Theme.of(context).primaryColor),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(8),
-                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
                     ),
                     height: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -104,7 +101,10 @@ class QuestionCardWidget extends ConsumerWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Text(
-                  listQuestionCategory.map((e) => e.nameId).join(', '),
+                  GetIt.I<SharedPreferences>().getString(kDefaultLanguage) ==
+                          'id'
+                      ? listQuestionCategory.map((e) => e.nameId).join(', ')
+                      : listQuestionCategory.map((e) => e.nameEn).join(', '),
                   style: TextStyle(
                     color: selectedQuestions.contains(question.id)
                         ? ColorName.white
