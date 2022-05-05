@@ -4,9 +4,10 @@ import 'package:get_it/get_it.dart';
 
 class UserHelper {
   String? userId;
+  User? user;
 
-  Future<User?> getUser() {
-    return GetIt.I<Account>().get();
+  Future<User?> getUser() async {
+    return user = await GetIt.I<Account>().get();
   }
 
   Future<Session> getSession() async {

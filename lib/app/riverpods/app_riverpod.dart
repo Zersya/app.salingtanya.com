@@ -22,6 +22,7 @@ class AppNotifier extends StateNotifier<BasicState> {
     late bool isLoggedIn;
 
     try {
+      await GetIt.I<UserHelper>().getUser();
       await GetIt.I<UserHelper>().getSession();
 
       isLoggedIn = true;

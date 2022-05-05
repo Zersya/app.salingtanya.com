@@ -114,7 +114,7 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
                 );
               },
             ),
-            const ToggleDarkModeWidget(),
+            const ToggleDarkModeWidget(color: ColorName.white),
           ],
         ),
         body: detailRoomState.maybeWhen(
