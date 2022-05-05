@@ -52,7 +52,7 @@ class AuthRepository {
         success: redirectUrl,
         failure: redirectUrl,
       );
-      GetIt.I<NavigationHelper>().isLoggedIn = true;
+
       final session = await GetIt.I<UserHelper>().getSession();
       final prefs = GetIt.I<SharedPreferences>();
       final now = DateTime.now();
@@ -71,6 +71,8 @@ class AuthRepository {
           'default_language': prefs.getString(kDefaultLanguage) ?? 'id',
         },
       );
+
+      GetIt.I<NavigationHelper>().isLoggedIn = true;
     } on AppwriteException catch (e) {
       if (e.type == AppwriteExceptionType.kDocumentNotFound) {
         final session = await GetIt.I<UserHelper>().getSession();
@@ -86,6 +88,8 @@ class AuthRepository {
             'default_language': prefs.getString(kDefaultLanguage) ?? 'id',
           },
         );
+        GetIt.I<NavigationHelper>().isLoggedIn = true;
+
         return;
       }
       if (e.type == AppwriteExceptionType.kUserSessionExist) {
@@ -95,6 +99,8 @@ class AuthRepository {
       throw ExceptionWithMessage(e.message);
     } catch (e) {
       throw ExceptionWithMessage(e.toString());
+    } finally {
+      await GetIt.I<UserHelper>().getUser();
     }
   }
 

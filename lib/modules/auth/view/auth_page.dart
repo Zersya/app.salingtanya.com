@@ -21,13 +21,16 @@ class AuthPage extends StatelessWidget {
           SizedBox(
             width: 280,
             height: 180,
-            child: Assets.images.logoSalingtanya.image(
-              width: 80,
-              height: 80,
-              fit: BoxFit.contain,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: Assets.images.logoSalingtanya.image(
+                width: 80,
+                height: 80,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
           _SignInWidget(lastLocation),
         ],
       ),

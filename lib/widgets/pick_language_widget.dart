@@ -27,6 +27,7 @@ class PickLanguageWidget extends StatelessWidget {
           RadioListTile(
             title: const Text('Indonesia'),
             value: 'id',
+            activeColor: Theme.of(context).colorScheme.primary,
             groupValue: defaultLanguage,
             onChanged: (value) {
               pref.setString(kDefaultLanguage, 'id');
@@ -36,6 +37,7 @@ class PickLanguageWidget extends StatelessWidget {
           RadioListTile(
             title: const Text('English'),
             value: 'en',
+            activeColor: Theme.of(context).colorScheme.primary,
             groupValue: defaultLanguage,
             onChanged: (value) {
               pref.setString(kDefaultLanguage, 'en');

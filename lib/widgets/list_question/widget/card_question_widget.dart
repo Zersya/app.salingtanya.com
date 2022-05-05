@@ -102,9 +102,9 @@ class QuestionCardWidget extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 child: Text(
                   GetIt.I<SharedPreferences>().getString(kDefaultLanguage) ==
-                          'id'
-                      ? listQuestionCategory.map((e) => e.nameId).join(', ')
-                      : listQuestionCategory.map((e) => e.nameEn).join(', '),
+                          'en'
+                      ? listQuestionCategory.map((e) => e.nameEn).join(', ')
+                      : listQuestionCategory.map((e) => e.nameId).join(', '),
                   style: TextStyle(
                     color: selectedQuestions.contains(question.id)
                         ? ColorName.white

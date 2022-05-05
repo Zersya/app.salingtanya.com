@@ -39,7 +39,10 @@ class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
     });
   }
 
-  void Function() close() => _repo.subscription.close;
+  void close() {
+    _repo.subscription.close();
+    super.dispose();
+  }
 
   Future getRoom() async {
     try {

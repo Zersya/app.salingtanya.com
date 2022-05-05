@@ -1,4 +1,3 @@
-
 import 'package:app_salingtanya/gen/assets.gen.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/helpers/user_helper.dart';
@@ -29,7 +28,7 @@ class SliverCustomHeader extends StatelessWidget {
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: Assets.images.logoSalingtanya.image(width: 50),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 16),
             Text(
               'Hi ${GetIt.I<UserHelper>().user?.name ?? ''}',
               style: const TextStyle(fontSize: 16),

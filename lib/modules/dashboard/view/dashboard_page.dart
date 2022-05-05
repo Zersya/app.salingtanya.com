@@ -2,9 +2,11 @@ import 'package:app_salingtanya/freezed/basic_state.dart';
 import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/modules/dashboard/riverpods/create_feedback_riverpod.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/create_question_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/list_question_widget.dart';
+import 'package:app_salingtanya/widgets/pick_language_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/create_room_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/list_room_widget.dart';
 import 'package:app_salingtanya/widgets/sliver_custom_header.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'widgets/create_feedback_widget.dart';
@@ -21,8 +24,26 @@ final createFeedbackProvider =
   (ref) => CreateFeedbackNotifier(),
 );
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  @override
+  void initState() {
+    super.initState();
+    final prefs = GetIt.I<SharedPreferences>();
+    final defaultLanguage = prefs.getString(kDefaultLanguage);
+    if (defaultLanguage == null) {
+      PickLanguageWidget(
+        defaultLanguage: defaultLanguage,
+        pref: prefs,
+      ).showCustomDialog<void>(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

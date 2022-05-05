@@ -34,14 +34,14 @@ final namesController =
   return currentNames.map((e) => TextEditingController(text: e)).toList();
 });
 
-final updateDetailRoomProvider =
-    StateNotifierProvider<UpdateDetailRoomNotifier, BasicFormState>(
-  (ref) => UpdateDetailRoomNotifier(),
-);
-
 final detailRoomProvider = StateNotifierProvider.autoDispose<DetailRoomNotifier,
     BasicDetailState<Room?>>(
   DetailRoomNotifier.new,
+);
+
+final updateDetailRoomProvider =
+    StateNotifierProvider<UpdateDetailRoomNotifier, BasicFormState>(
+  (ref) => UpdateDetailRoomNotifier(),
 );
 
 final questionRoomProvider =
@@ -67,13 +67,6 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
       ..getRoom();
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    ref.read(detailRoomProvider.notifier).close();
-    ref.read(questionRoomProvider.notifier).dispose();
-    super.dispose();
   }
 
   @override
@@ -141,7 +134,6 @@ class _DetailRoomBody extends ConsumerWidget {
     final isCreatedByMe = room.isCreatedByMe();
 
     final stateQuestionRoom = ref.watch(questionRoomProvider);
-    final stateUpdateDetailRoom = ref.watch(updateDetailRoomProvider);
 
     final session = room.indexSession + 1;
 
