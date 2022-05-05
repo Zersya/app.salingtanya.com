@@ -141,6 +141,7 @@ class _DetailRoomBody extends ConsumerWidget {
     final isCreatedByMe = room.isCreatedByMe();
 
     final stateQuestionRoom = ref.watch(questionRoomProvider);
+    final stateUpdateDetailRoom = ref.watch(updateDetailRoomProvider);
 
     final session = room.indexSession + 1;
 
@@ -191,7 +192,7 @@ class _DetailRoomBody extends ConsumerWidget {
                                   .getRandomQuestionId(room.questionIds);
 
                               ref
-                                  .read(updateDetailRoomProvider.notifier)
+                                  .read(questionRoomProvider.notifier)
                                   .updateActiveQuestionId(
                                     room,
                                     result,

@@ -1,7 +1,9 @@
 import 'package:app_salingtanya/freezed/basic_detail_state.dart';
 import 'package:app_salingtanya/models/question.dart';
+import 'package:app_salingtanya/models/room.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
 import 'package:app_salingtanya/repositories/questions_repository.dart';
+import 'package:app_salingtanya/repositories/rooms_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class QuestionRoomNotifier extends StateNotifier<BasicDetailState<Question?>> {
@@ -10,11 +12,29 @@ class QuestionRoomNotifier extends StateNotifier<BasicDetailState<Question?>> {
 
   final Ref ref;
   final _repo = QuestionsRepository();
+  final _repoRoom = RoomsRepository();
 
   String getRandomQuestionId(List<String> questionIds) {
     final result = _repo.getRandomQuestionId(questionIds);
 
     return result;
+  }
+
+  Future updateActiveQuestionId(
+    Room room,
+    String questionId,
+  ) async {
+    try {
+      state = const BasicDetailState.loading();
+
+      await _repoRoom.updateActiveQuestionId(room, questionId, room.id);
+
+      final question = ref.read(activeQuestionProvider.notifier).state;
+
+      state = BasicDetailState.idle(question);
+    } catch (e) {
+      state = BasicDetailState.error(e.toString());
+    }
   }
 
   Future getQuestion(String questionId) async {

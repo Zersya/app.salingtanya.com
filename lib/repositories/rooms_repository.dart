@@ -173,6 +173,8 @@ class RoomsRepository {
       'updated_at': now.toIso8601String(),
     };
 
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+
     await ErrorWrapper.guard(
       () => db.updateDocument(
         collectionId: kRoomsCollectionId,

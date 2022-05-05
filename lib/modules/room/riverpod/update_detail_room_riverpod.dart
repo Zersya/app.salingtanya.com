@@ -51,22 +51,6 @@ class UpdateDetailRoomNotifier extends StateNotifier<BasicFormState> {
     }
   }
 
-  Future updateActiveQuestionId(
-    Room room,
-    String questionId,
-  ) async {
-    try {
-      state = const BasicFormState.loading();
-
-      await _repo.updateActiveQuestionId(room, questionId, room.id);
-      onUpdate?.call();
-
-      state = const BasicFormState.succeed();
-    } catch (e) {
-      state = const BasicFormState.failed();
-    }
-  }
-
   Future updateActiveQuestionEmojis(
     Room room,
     List<String> emojis,
