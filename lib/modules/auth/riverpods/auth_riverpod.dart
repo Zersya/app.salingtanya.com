@@ -21,13 +21,17 @@ class AuthNotifier extends StateNotifier<BasicState> {
     }
   }
 
-  Future signInGoogle() async {
+  Future signInGoogle(String? lastLocation) async {
     try {
       state = const BasicState.loading();
 
       await _repo.signInGoogle();
 
-      GetIt.I<NavigationHelper>().goNamed('DashboardPage');
+      if (lastLocation == null) {
+        GetIt.I<NavigationHelper>().goNamed('DashboardPage');
+      } else {
+        GetIt.I<NavigationHelper>().goRouter.go(lastLocation);
+      }
 
       state = const BasicState.idle();
     } catch (e) {

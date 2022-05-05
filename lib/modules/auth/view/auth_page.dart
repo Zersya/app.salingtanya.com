@@ -5,7 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class AuthPage extends StatelessWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  const AuthPage({
+    Key? key,
+    required this.lastLocation,
+  }) : super(key: key);
+
+  final String? lastLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class AuthPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          const _SignInWidget(),
+          _SignInWidget(lastLocation),
         ],
       ),
     );
@@ -31,7 +36,9 @@ class AuthPage extends StatelessWidget {
 }
 
 class _SignInWidget extends ConsumerWidget {
-  const _SignInWidget({Key? key}) : super(key: key);
+  const _SignInWidget(this.lastLocation, {Key? key}) : super(key: key);
+
+  final String? lastLocation;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +57,7 @@ class _SignInWidget extends ConsumerWidget {
           ),
           text: 'Sign in with Google',
           onPressed: () async {
-            await ref.read(authProvider.notifier).signInGoogle();
+            await ref.read(authProvider.notifier).signInGoogle(lastLocation);
           },
         ),
       ),

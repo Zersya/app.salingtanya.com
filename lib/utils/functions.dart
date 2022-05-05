@@ -7,7 +7,7 @@ String get defaultUrl {
       return 'http://localhost:8080';
     }
   }
-  return 'https://app.salingtanya.com/';
+  return 'https://app.salingtanya.com';
 }
 
 /// Currency format for Rupiah ( IDR )

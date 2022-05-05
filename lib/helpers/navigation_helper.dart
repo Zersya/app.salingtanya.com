@@ -60,7 +60,9 @@ class NavigationHelper {
           GoRoute(
             path: 'auth',
             name: 'AuthPage',
-            builder: (context, state) => const AuthPage(),
+            builder: (context, state) => AuthPage(
+              lastLocation: state.queryParams['last-location'],
+            ),
             redirect: (state) {
               if (!isLoggedIn) return null;
 
