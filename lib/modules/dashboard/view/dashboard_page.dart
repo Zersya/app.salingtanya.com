@@ -24,24 +24,32 @@ final createFeedbackProvider =
   (ref) => CreateFeedbackNotifier(),
 );
 
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  ConsumerState<DashboardPage> createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   void initState() {
     super.initState();
     final prefs = GetIt.I<SharedPreferences>();
     final defaultLanguage = prefs.getString(kDefaultLanguage);
+
     if (defaultLanguage == null) {
       PickLanguageWidget(
         defaultLanguage: defaultLanguage,
         pref: prefs,
-      ).showCustomDialog<void>(context);
+      ).showCustomDialog<void>(context).then((value) {
+        Future.wait<void>([
+          ref.read(latestAddedQuestionsProvider.notifier).getQuestions(),
+          ref
+              .read(popularQuestionsProvider.notifier)
+              .getQuestions(isPopular: true),
+        ]);
+      });
     }
   }
 
