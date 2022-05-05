@@ -6,6 +6,7 @@ const kQuestionCategoriesCollectionId = '6261de7869623916a7b6';
 
 const kIsDarkMode = 'isDarkMode';
 const kDefaultLanguage = 'default_language';
+const kIsCookieVisible = 'is_cookie_visible';
 const kSessionId = 'session_id';
 const kAccessToken = 'token';
 const kRefreshToken = 'refresh_token';

@@ -28,9 +28,9 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   appwrite: ^4.0.2
-  confetti: ^0.6.0
   cupertino_icons: ^1.0.2
   device_preview: ^1.0.0
+  easy_localization: ^3.0.0
   flash: ^2.0.3+2
   flutter:
     sdk: flutter

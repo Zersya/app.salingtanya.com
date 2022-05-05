@@ -17,12 +17,15 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final appProvider = StateNotifierProvider.autoDispose<AppNotifier, BasicState>(
   (ref) => AppNotifier(),
 );
 
 final themeIsDarkProvider = StateProvider((ref) => false);
+
+final infoCookieIsVisible = StateProvider((ref) => true);
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -58,10 +61,13 @@ class _AppState extends ConsumerState<App> {
     final brightness = SchedulerBinding.instance!.window.platformBrightness;
     final isDarkMode = brightness == Brightness.dark;
     ref.read(themeIsDarkProvider.notifier).state = isDarkMode;
-   
+
     SharedPreferences.getInstance().then((pref) {
       final isDarkModePref = pref.getBool(kIsDarkMode) ?? isDarkMode;
       ref.read(themeIsDarkProvider.notifier).state = isDarkModePref;
+
+      final isCookieVisible = pref.getBool(kIsCookieVisible) ?? true;
+      ref.read(infoCookieIsVisible.notifier).state = isCookieVisible;
     });
 
     super.initState();
@@ -105,9 +111,82 @@ class _AppState extends ConsumerState<App> {
     );
 
     return app.when(
-      idle: () => _AppBody(
-        colorSchemeLight: _colorSchemeLight,
-        colorSchemeDark: _colorSchemeDark,
+      idle: () => Column(
+        children: [
+          Expanded(
+            child: _AppBody(
+              colorSchemeLight: _colorSchemeLight,
+              colorSchemeDark: _colorSchemeDark,
+            ),
+          ),
+          if (kIsWeb)
+            Consumer(
+              builder: (context, ref, child) {
+                final isVisible = ref.watch(infoCookieIsVisible);
+
+                return Visibility(
+                  visible: isVisible,
+                  child: child!,
+                );
+              },
+              child: Directionality(
+                textDirection: TextDirection.ltr,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    color: ColorName.primaryDark,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(16),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'This website uses authentication cookies. Authentication data is not shared externally.',
+                        style: TextStyle(
+                          color: ColorName.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      TextButton(
+                        onPressed: () {
+                          final url =
+                              Uri.parse('https://www.cookiesandyou.com/');
+                          launchUrl(url);
+                        },
+                        child: const Text(
+                          'Learn more',
+                          style: TextStyle(color: ColorName.white),
+                        ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: ColorName.primary,
+                          textStyle: const TextStyle(
+                            color: ColorName.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () async {
+                          ref.read(infoCookieIsVisible.notifier).state = false;
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setBool(kIsCookieVisible, false);
+                        },
+                        child: const Text(
+                          'Accept',
+                          style: TextStyle(color: ColorName.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
       loading: () => Material(child: Assets.images.logoIndieapps.image()),
     );
