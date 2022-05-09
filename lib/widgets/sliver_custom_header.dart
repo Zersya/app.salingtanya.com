@@ -1,4 +1,5 @@
 import 'package:app_salingtanya/gen/assets.gen.dart';
+import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/helpers/user_helper.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
@@ -19,38 +20,48 @@ class SliverCustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.all(16),
-      sliver: SliverToBoxAdapter(
+    return SliverToBoxAdapter(
+      child: Container(
+        color: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
+          left: 16,
+          right: 16,
+          bottom: 16,
+        ),
         child: Row(
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Assets.images.logoSalingtanya.image(width: 50),
+              child: Assets.images.logoSalingtanyaTransparent.image(width: 50),
             ),
             const SizedBox(width: 16),
             Text(
               'Hi ${GetIt.I<UserHelper>().user?.name ?? ''}',
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
             const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.logout),
-              color: Theme.of(context).colorScheme.primary,
-              onPressed: () async {
-                await AuthRepository().signOut();
-                GetIt.I<NavigationHelper>().goNamed('AuthPage');
-              },
-            ),
             Consumer(
               builder: (context, ref, child) {
-                return IconButton(
-                  icon: const Icon(Icons.language),
-                  color: Theme.of(context).colorScheme.primary,
-                  onPressed: () async {
-                    final prefs = GetIt.I<SharedPreferences>();
-                    final defaultLanguage = prefs.getString(kDefaultLanguage);
+                final prefs = GetIt.I<SharedPreferences>();
+                final defaultLanguage = prefs.getString(kDefaultLanguage);
+                ref.watch(latestAddedQuestionsProvider);
 
+                return IconButton(
+                  icon: Text(
+                    defaultLanguage?.toUpperCase() ?? 'ID',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  onPressed: () async {
                     await PickLanguageWidget(
                       defaultLanguage: defaultLanguage,
                       pref: prefs,
@@ -69,6 +80,14 @@ class SliverCustomHeader extends StatelessWidget {
               },
             ),
             const ToggleDarkModeWidget(),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              color: Theme.of(context).colorScheme.onPrimary,
+              onPressed: () async {
+                await AuthRepository().signOut();
+                GetIt.I<NavigationHelper>().goNamed('AuthPage');
+              },
+            ),
           ],
         ),
       ),

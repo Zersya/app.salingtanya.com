@@ -3,6 +3,8 @@
 ///  FlutterGen
 /// *****************************************************
 
+// ignore_for_file: directives_ordering,unnecessary_import
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
@@ -10,10 +12,15 @@ import 'package:flutter/services.dart';
 class $AssetsIllustrationGen {
   const $AssetsIllustrationGen();
 
+  /// File path: assets/illustration/fitting_piece.svg
   SvgGenImage get fittingPiece =>
       const SvgGenImage('assets/illustration/fitting_piece.svg');
+
+  /// File path: assets/illustration/read_book.svg
   SvgGenImage get readBook =>
       const SvgGenImage('assets/illustration/read_book.svg');
+
+  /// File path: assets/illustration/start_building.svg
   SvgGenImage get startBuilding =>
       const SvgGenImage('assets/illustration/start_building.svg');
 }
@@ -21,8 +28,15 @@ class $AssetsIllustrationGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/logo-indieapps.png
   AssetGenImage get logoIndieapps =>
       const AssetGenImage('assets/images/logo-indieapps.png');
+
+  /// File path: assets/images/logo-salingtanya-transparent.png
+  AssetGenImage get logoSalingtanyaTransparent =>
+      const AssetGenImage('assets/images/logo-salingtanya-transparent.png');
+
+  /// File path: assets/images/logo-salingtanya.png
   AssetGenImage get logoSalingtanya =>
       const AssetGenImage('assets/images/logo-salingtanya.png');
 }
@@ -104,6 +118,8 @@ class SvgGenImage {
     String? semanticsLabel,
     bool excludeFromSemantics = false,
     Clip clipBehavior = Clip.hardEdge,
+    bool cacheColorFilter = false,
+    SvgTheme? theme,
   }) {
     return SvgPicture.asset(
       _assetName,
@@ -122,6 +138,8 @@ class SvgGenImage {
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
       clipBehavior: clipBehavior,
+      cacheColorFilter: cacheColorFilter,
+      theme: theme,
     );
   }
 

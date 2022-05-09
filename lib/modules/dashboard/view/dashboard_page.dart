@@ -35,22 +35,25 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    final prefs = GetIt.I<SharedPreferences>();
-    final defaultLanguage = prefs.getString(kDefaultLanguage);
 
-    if (defaultLanguage == null) {
-      PickLanguageWidget(
-        defaultLanguage: defaultLanguage,
-        pref: prefs,
-      ).showCustomDialog<void>(context).then((value) {
-        Future.wait<void>([
-          ref.read(latestAddedQuestionsProvider.notifier).getQuestions(),
-          ref
-              .read(popularQuestionsProvider.notifier)
-              .getQuestions(isPopular: true),
-        ]);
-      });
-    }
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      final prefs = GetIt.I<SharedPreferences>();
+      final defaultLanguage = prefs.getString(kDefaultLanguage);
+
+      if (defaultLanguage == null) {
+        PickLanguageWidget(
+          defaultLanguage: defaultLanguage,
+          pref: prefs,
+        ).showCustomDialog<void>(context).then((value) {
+          Future.wait<void>([
+            ref.read(latestAddedQuestionsProvider.notifier).getQuestions(),
+            ref
+                .read(popularQuestionsProvider.notifier)
+                .getQuestions(isPopular: true),
+          ]);
+        });
+      }
+    });
   }
 
   @override
@@ -75,6 +78,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             onClose: () {},
             tooltip: 'Menu',
             heroTag: 'menu_fab',
+            backgroundColor: Theme.of(context).colorScheme.primary,
             foregroundColor: Colors.white,
             children: [
               SpeedDialChild(

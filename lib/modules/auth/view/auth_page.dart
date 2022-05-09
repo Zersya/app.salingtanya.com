@@ -18,16 +18,12 @@ class AuthPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 280,
-            height: 180,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Assets.images.logoSalingtanya.image(
-                width: 80,
-                height: 80,
-                fit: BoxFit.contain,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Assets.images.logoSalingtanya.image(
+              width: 180,
+              height: 180,
+              fit: BoxFit.contain,
             ),
           ),
           const SizedBox(height: 16),

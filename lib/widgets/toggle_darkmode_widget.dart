@@ -16,9 +16,9 @@ class ToggleDarkModeWidget extends ConsumerWidget {
 
     return IconButton(
       icon: Icon(
-        isDark ? Icons.brightness_2 : Icons.brightness_1,
+        isDark ? Icons.brightness_2 : Icons.brightness_7,
       ),
-      color: color ?? Theme.of(context).colorScheme.primary,
+      color: color ?? Theme.of(context).colorScheme.onPrimary,
       onPressed: () {
         final isDarkProvider = ref.read(themeIsDarkProvider.notifier);
         isDarkProvider.state = !isDarkProvider.state;

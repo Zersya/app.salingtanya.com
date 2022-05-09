@@ -44,7 +44,8 @@ class AuthRepository {
     try {
       var redirectUrl = '$defaultUrl/auth/web.html';
       if (!kIsWeb && Platform.isAndroid) {
-        redirectUrl = '$defaultUrl/auth/android.html';
+        // redirectUrl = '$defaultUrl/auth/android.html';
+        redirectUrl = defaultUrl;
       }
 
       await account.createOAuth2Session(
