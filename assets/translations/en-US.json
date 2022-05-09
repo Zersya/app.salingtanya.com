@@ -1,0 +1,72 @@
+{
+  "widgets": {
+    "loading": "Loading...",
+    "no_results": "No results found",
+    "send": "Send",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "add": "Add"
+  },
+  "signin": {
+    "google": "Sign in with Google"
+  },
+  "dashboard": {
+    "create_room": "Create Room",
+    "create_question": "Create Question",
+    "feedback": "Feedback",
+    "feedback_desc": "Please let us know how we can improve our service.",
+    "feedback_hint": "Insert your feedback here...",
+    "feedback_message_empty": "Please enter a feedback",
+    "feedback_message_thanks": "Thanks for your feedback!",
+    "chat": "Chat",
+    "popular_questions": "Popular Questions",
+    "latest_questions": "Latest Questions"
+  },
+  "questions": {
+    "question_can_not_be_empty": "Question can not be empty",
+    "question_must_be_question": "Question must be a question ( ? )",
+    "you_can_add_question": "You can add a question",
+    "what_is_your_question": "What is your question?",
+    "select_category": "Select Category",
+    "category": "Category",
+    "no_question_found": "No question found, create your first question"
+  },
+  "rooms": {
+    "no_rooms_found": "No rooms found, create your first room",
+    "title": "Rooms",
+    "room_name": "Room name",
+    "room_cant_be_empty": "Room name can't be empty",
+    "what_is_your_friend_name": "What is your friend's name? ( {} )",
+    "select_question": "Select Question",
+    "questions_by_category": "Questions by Category",
+    "latest_added_questions": "Latest Added Questions",
+    "url_room_copied": "Room URL copied to clipboard",
+    "game_started_on_session": "Game started on session {}",
+    "get_question": "Get Question",
+    "tutorial": {
+      "title": "How to play?",
+      "1": "If you play together, please sit and look at each other.",
+      "2": {
+        "1": "First, you have ",
+        "2": "{} selected questions ",
+        "3": "in this room, if you don't have or want to add questions ",
+        "4": "please click here."
+      },
+      "3": {
+        "1": "You have {} friend's name, ",
+        "2": "please enter your friend's name, by click ",
+        "3": "add here."
+      },
+      "4": {
+        "1": "Then you can share this room with your friends ",
+        "2": "copy the room."
+      },
+      "5": "If you have added questions and shared this room with your friends, feel free to start asking each other :)"
+    },
+    "start_game": "Start Game",
+    "waiting_for_room_master_to_start_game": "Waiting for room master to start game...",
+    "no_members_in_room": "No members in room, please add members...",
+    "no_questions_in_room": "No questions in room, please add questions..."
+  }
+}

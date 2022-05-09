@@ -4,6 +4,7 @@ import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
 import 'package:app_salingtanya/widgets/list_category/view/list_question_category_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/create_question_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/list_question_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -29,7 +30,7 @@ class SelectQuestionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Question'),
+        title: const Text('rooms.select_questions').tr(),
         actions: [
           Consumer(
             builder: (context, ref, child) {
@@ -68,47 +69,47 @@ class SelectQuestionsPage extends StatelessWidget {
               .showCustomDialog<void>(context);
         },
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: CustomScrollView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(child: SizedBox(height: 20)),
+            const SliverToBoxAdapter(child: SizedBox(height: 20)),
             SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverToBoxAdapter(
-                child: Text(
-                  'Questions by Categories',
+                child: const Text(
+                  'rooms.questions_by_category',
                   style: TextStyle(fontSize: 24),
-                ),
+                ).tr(),
               ),
             ),
-            SliverPadding(
+            const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 16),
               sliver: ListQuestionCategoryWidget(),
             ),
             SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverToBoxAdapter(
-                child: Text(
-                  'Popular Questions',
+                child: const Text(
+                  'dashboard.popular_questions',
                   style: TextStyle(fontSize: 24),
-                ),
+                ).tr(),
               ),
             ),
-            SliverPadding(
+            const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 16),
               sliver: ListQuestionWidget(isPopular: true, isSelectable: true),
             ),
-            SliverPadding(
+            const SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  'Latest Added Questions',
+                  'rooms.latest_added_questions',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
             ),
-            SliverPadding(
+            const SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 16),
               sliver: ListQuestionWidget(
                 isPopular: false,

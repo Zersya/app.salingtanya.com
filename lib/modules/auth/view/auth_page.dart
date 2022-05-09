@@ -1,5 +1,6 @@
 import 'package:app_salingtanya/gen/assets.gen.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -54,7 +55,7 @@ class _SignInWidget extends ConsumerWidget {
               ),
             ),
           ),
-          text: 'Sign in with Google',
+          text: tr('signin.google'),
           onPressed: () async {
             await ref.read(authProvider.notifier).signInGoogle(lastLocation);
           },

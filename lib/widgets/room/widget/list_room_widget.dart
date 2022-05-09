@@ -4,6 +4,7 @@ import 'package:app_salingtanya/utils/extensions/string_extension.dart';
 import 'package:app_salingtanya/utils/extensions/widget_extension.dart';
 import 'package:app_salingtanya/widgets/custom_error_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/create_room_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -21,7 +22,7 @@ class ListRoomWidget extends ConsumerWidget {
           if (data.isEmpty) {
             return Center(
               child: CustomErrorWidget(
-                message: 'No rooms has been made\nTap the button to create one',
+                message: tr('rooms.no_rooms_found'),
                 onTap: () {
                   final controller = TextEditingController();
                   CreateRoomWidget(controller: controller)

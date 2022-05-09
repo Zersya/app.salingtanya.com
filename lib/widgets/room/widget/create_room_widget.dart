@@ -1,6 +1,6 @@
-
 import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +13,7 @@ class CreateRoomWidget extends ConsumerWidget {
 
   Future _onSubmitted(BuildContext context, WidgetRef ref) async {
     if (controller.text.isEmpty) {
-      GetIt.I<FlashMessageHelper>().showError('Room name cannot be empty');
+      GetIt.I<FlashMessageHelper>().showError(tr('rooms.room_cant_be_empty'));
       return;
     }
 
@@ -35,9 +35,9 @@ class CreateRoomWidget extends ConsumerWidget {
           TextField(
             controller: controller,
             autofocus: true,
-            decoration: const InputDecoration(
-              labelText: 'Room Name',
-              border: OutlineInputBorder(),
+            decoration:  InputDecoration(
+              labelText: tr('rooms.room_name'),
+              border: const OutlineInputBorder(),
             ),
             textInputAction: TextInputAction.none,
             onSubmitted: (value) => _onSubmitted(context, ref),
@@ -54,7 +54,7 @@ class CreateRoomWidget extends ConsumerWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close'),
+                  child: const Text('widgets.close').tr(),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
@@ -62,7 +62,7 @@ class CreateRoomWidget extends ConsumerWidget {
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () => _onSubmitted(context, ref),
-                  child: const Text('Add'),
+                  child: const Text('widgets.add').tr(),
                 ),
               ],
             ),

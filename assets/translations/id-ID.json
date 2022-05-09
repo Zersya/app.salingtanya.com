@@ -1,0 +1,72 @@
+{
+  "widgets": {
+    "loading": "Memuat...",
+    "no_results": "Tidak ada hasil",
+    "send": "Kirim",
+    "cancel": "Batal",
+    "close": "Tutup",
+    "save": "Simpan",
+    "add": "Tambah"
+  },
+  "signin": {
+    "google": "Masuk dengan Google"
+  },
+  "dashboard": {
+    "create_room": "Buat Ruangan",
+    "create_question": "Buat Pertanyaan",
+    "feedback": "Umpan Balik",
+    "feedback_desc": "Kirim umpan balik dan saranmu kepada kami",
+    "feedback_hint": "Masukkan pesanmu disini...",
+    "feedback_message_empty": "Umpan balik tidak boleh kosong",
+    "feedback_message_thanks": "Terima kasih atas umpan balik Anda",
+    "chat": "Obrolan",
+    "popular_questions": "Pertanyaan Populer",
+    "latest_questions": "Pertanyaan Terbaru"
+  },
+  "questions": {
+    "question_can_not_be_empty": "Pertanyaan tidak boleh kosong",
+    "question_must_be_question": "Pertanyaan harus mengandung pertanyaan ( ? )",
+    "you_can_add_question": "Anda dapat menambah pertanyaan",
+    "what_is_your_question": "Apa yang ingin Anda tanyakan?",
+    "select_category": "Pilih Kategori",
+    "category": "Kategori",
+    "no_question_found": "Tidak ada pertanyaan, buat pertanyaan pertamamu"
+  },
+  "rooms": {
+    "no_rooms_found": "Tidak ada ruangan, buat ruangan pertamamu",
+    "title": "Ruangan",
+    "room_name": "Nama ruangan",
+    "room_cant_be_empty": "Nama ruangan tidak boleh kosong",
+    "what_is_your_friend_name": "Siapa nama temanmu? ( {} )",
+    "select_question": "Pilih pertanyaan",
+    "questions_by_category": "Pertanyaan berdasarkan kategori",
+    "latest_added_questions": "Pertanyaan Terbaru",
+    "url_room_copied": "URL ruangan telah disalin",
+    "game_started_on_session": "Permainan dimulai pada sesi {}",
+    "get_question": "Dapatkan pertanyaan",
+    "tutorial": {
+      "title": "Bagaimana cara bermain?",
+      "1": "Bila kalian bermain bersama, silahkan duduk melingkar dan saling berhadapan.",
+      "2": {
+        "1": "Pertama, anda memiliki ",
+        "2": "{} pertanyaan terpilih",
+        "3": "di room ini, jika kamu belum memiliki atau ingin menambahkan pertanyaan silahkan bisa juga mengklik ",
+        "4": "disini."
+      },
+      "3": {
+        "1": "Kamu memiliki {} nama teman, ",
+        "2": "silahkan masukan nama temanmu, dengan klik ",
+        "3": "tambah disini."
+      },
+      "4": {
+        "1": "Selanjutnya kamu bisa membagikan ruangan ini kepada temanmu ",
+        "2": "salin ruangan."
+      },
+      "5": "Jika kamu sudah menambahkan pertanyaan dan membagikan ruangan ini kepada teman anda, silahkan untuk mulai salingtanya :)"
+    },
+    "start_game": "Mulai Permainan",
+    "waiting_for_room_master_to_start_game": "Menunggu pemain pertama untuk memulai permainan...",
+    "no_members_in_room": "Tidak ada pemain di ruangan ini, silahkan masukan nama temanmu.",
+    "no_questions_in_room": "Tidak ada pertanyaan di ruangan ini, silahkan masukan pertanyaan."
+  }
+}

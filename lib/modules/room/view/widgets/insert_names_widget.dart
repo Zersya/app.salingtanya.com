@@ -10,7 +10,7 @@ class _InsertNameWidget extends ConsumerWidget {
     if (controllers
         .getRange(0, controllers.length - 1)
         .any((element) => element.text.isEmpty)) {
-      GetIt.I<FlashMessageHelper>().showError('Name cannot be empty');
+      GetIt.I<FlashMessageHelper>().showError(tr('rooms.room_cant_be_empty'));
       return;
     }
 
@@ -51,7 +51,7 @@ class _InsertNameWidget extends ConsumerWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close'),
+                  child: const Text('widgets.close').tr(),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
@@ -59,7 +59,7 @@ class _InsertNameWidget extends ConsumerWidget {
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () => _onSubmitted(context, ref),
-                  child: const Text('Save'),
+                  child: const Text('widgets.save').tr(),
                 ),
               ],
             ),
@@ -95,7 +95,10 @@ class _ListNamesWidget extends ConsumerWidget {
                   controller: controllers[index],
                   autofocus: true,
                   decoration: InputDecoration(
-                    labelText: "What is your friend's name? ( ${index + 1} )",
+                    labelText: tr(
+                      'rooms.what_is_your_friend_name',
+                      args: ['${index + 1}'],
+                    ),
                     border: const OutlineInputBorder(),
                   ),
                   textInputAction: TextInputAction.done,

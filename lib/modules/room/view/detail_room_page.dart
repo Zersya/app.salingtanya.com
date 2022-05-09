@@ -16,6 +16,8 @@ import 'package:app_salingtanya/utils/functions.dart';
 import 'package:app_salingtanya/widgets/custom_error_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/card_question_widget.dart';
 import 'package:app_salingtanya/widgets/toggle_darkmode_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -101,7 +103,7 @@ class _DetailRoomPageState extends ConsumerState<DetailRoomPage> {
                       ),
                     );
                     GetIt.I<FlashMessageHelper>()
-                        .showTopFlash('URL ruangan disalin');
+                        .showTopFlash(tr('rooms.url_room_copied'));
                   },
                   icon: const Icon(Icons.share),
                 );
@@ -142,7 +144,7 @@ class _DetailRoomBody extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Permainan dimulai pada sesi $session'),
+            const Text('rooms.game_started_on_session').tr(args: ['$session']),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: SizedBox(
@@ -190,7 +192,7 @@ class _DetailRoomBody extends ConsumerWidget {
                                     result,
                                   );
                             },
-                            child: const Text('Dapatkan pertanyaan'),
+                            child: const Text('rooms.get_question').tr(),
                           ),
                         ),
                     ],
@@ -219,116 +221,273 @@ class _SetupRoomWidget extends ConsumerWidget {
 
     final isCreatedByMe = room.isCreatedByMe();
 
+    if (!isCreatedByMe) {
+      return Center(
+        child: const Text('rooms.waiting_for_room_master_to_start_game').tr(),
+      );
+    }
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 200,
-            child: Assets.illustration.fittingPiece.svg(),
-          ),
-          const _TutorialItemWidget(
-            text: 'Hai, satanya akan memberi tahu kamu tentang room ini',
-          ),
-          const _TutorialItemWidget(
-            text:
-                'Bila kalian bermain bersama, silahkan duduk melingkar saling berhadapan',
-          ),
-          if (isCreatedByMe)
-            _TutorialItemWidget(
-              text: 'Pertama, silahkan',
-              subtext: room.memberNames.map((e) => e.capitalize).join(', '),
-              child: InkWell(
-                onTap: () {
-                  _InsertNameWidget(roomId: room.id)
-                      .showCustomDialog<void>(context);
-                },
-                child: Text(
-                  'Tambahkan nama akrab teman main kamu',
-                  style: TextStyle(
-                    color: room.memberNames.isNotEmpty
-                        ? Theme.of(context).colorScheme.onBackground
-                        : ColorName.primary,
-                  ),
-                ),
-              ),
-            )
-          else
-            _TutorialItemWidget(
-              text:
-                  'Pertama, teman kamu sudah membuat ruangan ini untuk kamu dan juga menambahkan nama kamu, yaitu: ',
-              subtext: room.memberNames.map((e) => e.capitalize).join(', '),
+          Text(
+            'rooms.tutorial.title'.tr(),
+            style: TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
-          if (isCreatedByMe)
-            _TutorialItemWidget(
-              text: 'Lalu kamu bisa',
-              subtext: '${room.questionIds.length} selected',
-              child: InkWell(
-                onTap: () {
-                  GetIt.I<NavigationHelper>().goNamed(
-                    'SelectQuestionsPage',
-                    params: {'rid': room.id},
-                  );
-                },
-                child: Text(
-                  'Menambahkan pertanyaan yang kamu inginkan',
-                  style: TextStyle(
-                    color: room.questionIds.isNotEmpty
-                        ? Theme.of(context).colorScheme.onBackground
-                        : ColorName.primary,
-                  ),
-                ),
-              ),
-            )
-          else
-            _TutorialItemWidget(
-              text: room.questionIds.isEmpty
-                  ? 'Room master belum memilih pertanyaan'
-                  : 'Terdapat ${room.questionIds.length} pertanyaan terpilih, yang akan di acak beserta dengan nama kamu',
-            ),
+          ),
           _TutorialItemWidget(
-            text: 'Salin lalu bagikan room ini dengan teman kamu',
-            child: InkWell(
-              onTap: () {
-                Clipboard.setData(
-                  ClipboardData(
-                    text: '$defaultUrl/public-room/${room.id}',
-                  ),
-                );
-                GetIt.I<FlashMessageHelper>()
-                    .showTopFlash('URL ruangan disalin');
-              },
-              child: const Text(
-                'Salin Room',
+            child: RichText(
+              text: TextSpan(
+                text: 'rooms.tutorial.1.1'.tr(),
                 style: TextStyle(
-                  color: ColorName.primary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ),
           ),
-          if (isCreatedByMe)
-            _TutorialItemWidget(
-              text: 'Bila sudah mengerti,',
-              child: InkWell(
-                onTap: () {
-                  ref
-                      .read(updateDetailRoomProvider.notifier)
-                      .startRoom(room.id);
-                },
-                child: const Text(
-                  'Ayo main!!',
-                  style: TextStyle(
-                    color: ColorName.primary,
+          _TutorialItemWidget(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: 'rooms.tutorial.2.1'.tr()),
+                  TextSpan(
+                    text: 'rooms.tutorial.2.2'.tr(
+                      args: ['${room.questionIds.length}'],
+                    ),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
+                  TextSpan(text: 'rooms.tutorial.2.3'.tr()),
+                  TextSpan(
+                    text: 'rooms.tutorial.2.4'.tr(),
+                    style: const TextStyle(
+                      color: Colors.blue,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        GetIt.I<NavigationHelper>().goNamed(
+                          'SelectQuestionsPage',
+                          params: {'rid': room.id},
+                        );
+                      },
+                  ),
+                ],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
-            )
-          else
-            const _TutorialItemWidget(
-              text: 'Menunggu room master memulai!',
             ),
+          ),
+
+          _TutorialItemWidget(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'rooms.tutorial.3.1'
+                        .tr(args: ['${room.memberNames.length}']),
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  TextSpan(text: 'rooms.tutorial.3.2'.tr()),
+                  TextSpan(
+                    text: 'rooms.tutorial.3.3'.tr(),
+                    style: const TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        _InsertNameWidget(roomId: room.id)
+                            .showCustomDialog<void>(context);
+                      },
+                  ),
+                ],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ),
+
+          _TutorialItemWidget(
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: 'rooms.tutorial.4.1'.tr()),
+                  TextSpan(
+                    text: 'rooms.tutorial.4.2'.tr(),
+                    style: const TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Clipboard.setData(
+                          ClipboardData(
+                            text: '$defaultUrl/public-room/${room.id}',
+                          ),
+                        );
+                        GetIt.I<FlashMessageHelper>()
+                            .showTopFlash(tr('rooms.url_room_copied'));
+                      },
+                  ),
+                ],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ),
+
+          _TutorialItemWidget(
+            child: RichText(
+              text: TextSpan(
+                text: 'rooms.tutorial.5'.tr(),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 32),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                if (room.memberNames.isEmpty) {
+                  GetIt.I<FlashMessageHelper>()
+                      .showError(tr('rooms.no_members_in_room'));
+                  return;
+                }
+
+                if (room.questionIds.isEmpty) {
+                  GetIt.I<FlashMessageHelper>()
+                      .showError(tr('rooms.no_questions_in_room'));
+                  return;
+                }
+
+                ref.read(updateDetailRoomProvider.notifier).startRoom(room.id);
+              },
+              child: const Text('rooms.start_game').tr(),
+            ),
+          )
+
+          // _TutorialItemWidget(
+          //   text:
+          //       tr('rooms.tutorial.2.2', args: ['${room.questionIds.length}']),
+          // ),
+          // _TutorialItemWidget(
+          //   text: tr('rooms.tutorial.3'),
+          // ),
+          // _TutorialItemWidget(
+          //   text: tr('rooms.tutorial.4'),
+          // ),
+          // if (isCreatedByMe)
+          //   _TutorialItemWidget(
+          //     text: 'Pertama, silahkan',
+          //     subtext: room.memberNames.map((e) => e.capitalize).join(', '),
+          //     child: InkWell(
+          //       onTap: () {
+          //         _InsertNameWidget(roomId: room.id)
+          //             .showCustomDialog<void>(context);
+          //       },
+          //       child: Text(
+          //         'Tambahkan nama akrab teman main kamu',
+          //         style: TextStyle(
+          //           color: room.memberNames.isNotEmpty
+          //               ? Theme.of(context).colorScheme.onBackground
+          //               : ColorName.primary,
+          //         ),
+          //       ),
+          //     ),
+          //   )
+          // else
+          //   _TutorialItemWidget(
+          //     text:
+          //         'Pertama, teman kamu sudah membuat ruangan ini untuk kamu dan juga menambahkan nama kamu, yaitu: ',
+          //     subtext: room.memberNames.map((e) => e.capitalize).join(', '),
+          //   ),
+          // if (isCreatedByMe)
+          //   _TutorialItemWidget(
+          //     text: 'Lalu kamu bisa',
+          //     subtext: '${room.questionIds.length} selected',
+          //     child: InkWell(
+          //       onTap: () {
+          //         GetIt.I<NavigationHelper>().goNamed(
+          //           'SelectQuestionsPage',
+          //           params: {'rid': room.id},
+          //         );
+          //       },
+          //       child: Text(
+          //         'Menambahkan pertanyaan yang kamu inginkan',
+          //         style: TextStyle(
+          //           color: room.questionIds.isNotEmpty
+          //               ? Theme.of(context).colorScheme.onBackground
+          //               : ColorName.primary,
+          //         ),
+          //       ),
+          //     ),
+          //   )
+          // else
+          //   _TutorialItemWidget(
+          //     text: room.questionIds.isEmpty
+          //         ? 'Room master belum memilih pertanyaan'
+          //         : 'Terdapat ${room.questionIds.length} pertanyaan terpilih, yang akan di acak beserta dengan nama kamu',
+          //   ),
+          // _TutorialItemWidget(
+          //   text: 'Salin lalu bagikan room ini dengan teman kamu',
+          //   child: InkWell(
+          //     onTap: () {
+          //       Clipboard.setData(
+          //         ClipboardData(
+          //           text: '$defaultUrl/public-room/${room.id}',
+          //         ),
+          //       );
+          //       GetIt.I<FlashMessageHelper>()
+          //           .showTopFlash('URL ruangan disalin');
+          //     },
+          //     child: const Text(
+          //       'Salin Room',
+          //       style: TextStyle(
+          //         color: ColorName.primary,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // if (isCreatedByMe)
+          //   _TutorialItemWidget(
+          //     text: 'Bila sudah mengerti,',
+          //     child: InkWell(
+          //       onTap: () {
+          //         ref
+          //             .read(updateDetailRoomProvider.notifier)
+          //             .startRoom(room.id);
+          //       },
+          //       child: const Text(
+          //         'Ayo main!!',
+          //         style: TextStyle(
+          //           color: ColorName.primary,
+          //         ),
+          //       ),
+          //     ),
+          //   )
+          // else
+          //   const _TutorialItemWidget(
+          //     text: 'Menunggu room master memulai!',
+          //   ),
         ],
       ),
     );
@@ -337,6 +496,38 @@ class _SetupRoomWidget extends ConsumerWidget {
 
 class _TutorialItemWidget extends StatelessWidget {
   const _TutorialItemWidget({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      child: Row(
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onBackground,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 24),
+          Flexible(
+            child: child,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TutorialItemWidgetOld extends StatelessWidget {
+  const _TutorialItemWidgetOld({
     Key? key,
     required this.text,
     this.subtext,

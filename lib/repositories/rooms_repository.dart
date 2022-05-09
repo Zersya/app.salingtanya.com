@@ -159,7 +159,7 @@ class RoomsRepository {
 
     var indexSession = room.indexSession;
 
-    if (indexRaffle == room.memberNames.length - 1) {
+    if (indexRaffle == room.memberNames.length) {
       indexRaffle = 0;
       indexSession++;
     }

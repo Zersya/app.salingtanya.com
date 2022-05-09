@@ -7,8 +7,9 @@ import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/get_it.dart';
-import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/appwrite.dart' hide Locale;
 import 'package:device_preview/device_preview.dart';
+import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -188,7 +189,32 @@ class _AppState extends ConsumerState<App> {
             ),
         ],
       ),
-      loading: () => Material(child: Assets.images.logoIndieapps.image()),
+      loading: () => Material(
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: ColorName.primary,
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Assets.images.logoSalingtanya.image(width: 300, height: 300),
+                    const SizedBox(height: 16),
+                    const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(ColorName.primary),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -262,28 +288,35 @@ class _AppBody extends ConsumerWidget {
             ),
           );
 
-    return DevicePreview(
-      // ignore: avoid_redundant_argument_values
-      enabled: kDebugMode,
-      builder: (context) => MaterialApp.router(
-        onGenerateTitle: (context) => 'Saling Tanya',
-        useInheritedMediaQuery: true,
-        locale: DevicePreview.locale(context),
-        routeInformationParser: appRouter.routeInformationParser,
-        routerDelegate: appRouter.routerDelegate,
-        builder: (context, widget) => ResponsiveWrapper.builder(
-          DevicePreview.appBuilder(context, widget),
-          minWidth: 480,
-          defaultScale: true,
-          breakpoints: [
-            const ResponsiveBreakpoint.resize(480, name: MOBILE),
-            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
-            const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-            const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
-          ],
-          background: Container(color: ColorName.background),
+    return EasyLocalization(
+      supportedLocales: const [Locale('en', 'US'), Locale('id', 'ID')],
+      fallbackLocale: const Locale('en', 'US'),
+      path: 'assets/translations',
+      child: DevicePreview(
+        // ignore: avoid_redundant_argument_values
+        enabled: kDebugMode,
+        builder: (context) => MaterialApp.router(
+          onGenerateTitle: (context) => 'Saling Tanya',
+          useInheritedMediaQuery: true,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: DevicePreview.locale(context),
+          routeInformationParser: appRouter.routeInformationParser,
+          routerDelegate: appRouter.routerDelegate,
+          builder: (context, widget) => ResponsiveWrapper.builder(
+            DevicePreview.appBuilder(context, widget),
+            minWidth: 480,
+            defaultScale: true,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(480, name: MOBILE),
+              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+              const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+              const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+            ],
+            background: Container(color: ColorName.background),
+          ),
+          theme: theme,
         ),
-        theme: theme,
       ),
     );
   }

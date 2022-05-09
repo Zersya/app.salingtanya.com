@@ -1,6 +1,7 @@
 import 'package:app_salingtanya/helpers/flash_message_helper.dart';
 import 'package:app_salingtanya/models/question_category.dart';
 import 'package:app_salingtanya/modules/top_level_providers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
@@ -23,12 +24,14 @@ class CreateQuestionWidget extends ConsumerWidget {
         ref.read(selectedFormQuestionCategoryProvider.notifier).state;
 
     if (selected == null) {
-      GetIt.I<FlashMessageHelper>().showError('Please select a category');
+      GetIt.I<FlashMessageHelper>()
+          .showError(tr('questions.question_can_not_be_empty'));
       return;
     }
 
     if (!controller.text.contains('?')) {
-      GetIt.I<FlashMessageHelper>().showError('Please input a question');
+      GetIt.I<FlashMessageHelper>()
+          .showError(tr('questions.question_must_be_question'));
       return;
     }
 
@@ -48,14 +51,14 @@ class CreateQuestionWidget extends ConsumerWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('You can add new question'),
+          const Text('questions.you_can_add_question').tr(),
           const SizedBox(height: 16),
           TextFormField(
             controller: controller,
             autofocus: true,
-            decoration: const InputDecoration(
-              labelText: 'What is the Question?',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: tr('questions.what_is_your_question'),
+              border: const OutlineInputBorder(),
             ),
             textInputAction: TextInputAction.none,
             onFieldSubmitted: (value) => _onSubmitted(context, ref),
@@ -69,12 +72,12 @@ class CreateQuestionWidget extends ConsumerWidget {
 
               return questionCategories.maybeWhen(
                 idle: (data) => DropdownButtonFormField<QuestionCategory>(
-                  decoration: const InputDecoration(
-                    labelText: 'Category',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: tr('questions.category'),
+                    border: const OutlineInputBorder(),
                   ),
                   isExpanded: true,
-                  hint: const Text('Select a category'),
+                  hint: const Text('questions.select_category').tr(),
                   value: selectedCategory,
                   items: data
                       .map(
@@ -104,7 +107,7 @@ class CreateQuestionWidget extends ConsumerWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Close'),
+                  child: const Text('widgets.close').tr(),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
@@ -112,7 +115,7 @@ class CreateQuestionWidget extends ConsumerWidget {
                     shape: const StadiumBorder(),
                   ),
                   onPressed: () => _onSubmitted(context, ref),
-                  child: const Text('Add'),
+                  child: const Text('widgets.add').tr(),
                 ),
               ],
             ),

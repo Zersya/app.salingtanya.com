@@ -10,6 +10,7 @@ import 'package:app_salingtanya/widgets/pick_language_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/create_room_widget.dart';
 import 'package:app_salingtanya/widgets/room/widget/list_room_widget.dart';
 import 'package:app_salingtanya/widgets/sliver_custom_header.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -84,7 +85,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               SpeedDialChild(
                 child: const Icon(Icons.table_restaurant),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
-                label: 'Create Room',
+                label: tr('dashboard.create_room'),
                 onTap: () {
                   final controller = TextEditingController();
                   CreateRoomWidget(controller: controller)
@@ -94,7 +95,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               SpeedDialChild(
                 child: const Icon(Icons.question_mark),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
-                label: 'Create Question',
+                label: tr('dashboard.create_question'),
                 onTap: () {
                   CreateQuestionWidget(controller: TextEditingController())
                       .showCustomDialog<void>(context);
@@ -103,7 +104,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               SpeedDialChild(
                 child: const Icon(Icons.feedback),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
-                label: 'Feedback',
+                label: tr('dashboard.feedback'),
                 onTap: () {
                   _CreateFeedbackWidget(controller: TextEditingController())
                       .showCustomDialog<void>(context);
@@ -112,7 +113,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               SpeedDialChild(
                 child: const Icon(Icons.chat_bubble),
                 backgroundColor: isLight ? Colors.white : Colors.black87,
-                label: 'Chat',
+                label: tr('dashboard.chat'),
                 onTap: () async {
                   final url = Uri.parse('https://chat.salingtanya.com/');
                   await launchUrl(url);
@@ -122,51 +123,51 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
           );
         },
       ),
-      body: const CustomScrollView(
-        physics: BouncingScrollPhysics(),
+      body: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
         slivers: [
-          SliverCustomHeader(),
-          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          const SliverCustomHeader(),
+          const SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
               child: Text(
-                'Popular Questions',
-                style: TextStyle(fontSize: 24),
+                tr('dashboard.popular_questions'),
+                style: const TextStyle(fontSize: 24),
               ),
             ),
           ),
-          SliverPadding(
+          const SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 16),
             sliver: ListQuestionWidget(isPopular: true),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
               child: Text(
-                'Latest Added Questions',
-                style: TextStyle(fontSize: 24),
+                tr('dashboard.latest_questions'),
+                style: const TextStyle(fontSize: 24),
               ),
             ),
           ),
-          SliverPadding(
+          const SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 16),
             sliver: ListQuestionWidget(isPopular: false),
           ),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
               child: Text(
-                'Rooms',
-                style: TextStyle(fontSize: 24),
+                tr('rooms.title'),
+                style: const TextStyle(fontSize: 24),
               ),
             ),
           ),
-          SliverPadding(
+          const SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 4),
             sliver: ListRoomWidget(),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(height: 16),
           ),
         ],

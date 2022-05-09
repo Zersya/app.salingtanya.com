@@ -4,6 +4,7 @@ import 'package:app_salingtanya/utils/screen_size.dart';
 import 'package:app_salingtanya/widgets/custom_error_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/card_question_widget.dart';
 import 'package:app_salingtanya/widgets/list_question/widget/create_question_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,8 +35,7 @@ class ListQuestionWidget extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: CustomErrorWidget(
-                message:
-                    'No questions has been made\nTap the button to create one',
+                message: tr('questions.no_question_found'),
                 onTap: () {
                   final controller = TextEditingController();
                   CreateQuestionWidget(controller: controller)
