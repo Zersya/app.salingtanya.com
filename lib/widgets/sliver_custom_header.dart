@@ -24,7 +24,7 @@ class SliverCustomHeader extends StatelessWidget {
       child: Container(
         color: Theme.of(context).primaryColor,
         padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top,
+          top: MediaQuery.of(context).padding.top + 16,
           left: 16,
           right: 16,
           bottom: 16,
