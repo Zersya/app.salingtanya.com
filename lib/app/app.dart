@@ -7,6 +7,7 @@ import 'package:app_salingtanya/gen/colors.gen.dart';
 import 'package:app_salingtanya/helpers/navigation_helper.dart';
 import 'package:app_salingtanya/utils/constants.dart';
 import 'package:app_salingtanya/utils/get_it.dart';
+import 'package:app_salingtanya/utils/screen_size.dart';
 import 'package:appwrite/appwrite.dart' hide Locale;
 import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
@@ -112,82 +113,9 @@ class _AppState extends ConsumerState<App> {
     );
 
     return app.when(
-      idle: () => Column(
-        children: [
-          Expanded(
-            child: _AppBody(
-              colorSchemeLight: _colorSchemeLight,
-              colorSchemeDark: _colorSchemeDark,
-            ),
-          ),
-          if (kIsWeb)
-            Consumer(
-              builder: (context, ref, child) {
-                final isVisible = ref.watch(infoCookieIsVisible);
-
-                return Visibility(
-                  visible: isVisible,
-                  child: child!,
-                );
-              },
-              child: Directionality(
-                textDirection: TextDirection.ltr,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: ColorName.primaryDark,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(16),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'This website uses authentication cookies. Authentication data is not shared externally.',
-                        style: TextStyle(
-                          color: ColorName.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      TextButton(
-                        onPressed: () {
-                          final url =
-                              Uri.parse('https://www.cookiesandyou.com/');
-                          launchUrl(url);
-                        },
-                        child: const Text(
-                          'Learn more',
-                          style: TextStyle(color: ColorName.white),
-                        ),
-                      ),
-                      const Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: ColorName.primary,
-                          textStyle: const TextStyle(
-                            color: ColorName.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onPressed: () async {
-                          ref.read(infoCookieIsVisible.notifier).state = false;
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setBool(kIsCookieVisible, false);
-                        },
-                        child: const Text(
-                          'Accept',
-                          style: TextStyle(color: ColorName.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ],
+      idle: () => _AppBody(
+        colorSchemeLight: _colorSchemeLight,
+        colorSchemeDark: _colorSchemeDark,
       ),
       loading: () => Material(
         child: Directionality(
@@ -203,7 +131,8 @@ class _AppState extends ConsumerState<App> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Assets.images.logoSalingtanya.image(width: 300, height: 300),
+                    Assets.images.logoSalingtanya
+                        .image(width: 300, height: 300),
                     const SizedBox(height: 16),
                     const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(ColorName.primary),
@@ -304,7 +233,96 @@ class _AppBody extends ConsumerWidget {
           routeInformationParser: appRouter.routeInformationParser,
           routerDelegate: appRouter.routerDelegate,
           builder: (context, widget) => ResponsiveWrapper.builder(
-            DevicePreview.appBuilder(context, widget),
+            Column(
+              children: [
+                Expanded(child: DevicePreview.appBuilder(context, widget)),
+                if (kIsWeb)
+                  Material(
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final isVisible = ref.watch(infoCookieIsVisible);
+
+                        return Visibility(
+                          visible: isVisible,
+                          child: child!,
+                        );
+                      },
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: const BoxDecoration(
+                            color: ColorName.primaryDark,
+                            borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(16),
+                            ),
+                          ),
+                          child: Wrap(
+                            runSpacing: 8,
+                            alignment: WrapAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'This website uses authentication cookies. Authentication data is not shared externally.',
+                                style: TextStyle(
+                                  color: ColorName.white,
+                                  fontSize: ScreenSize.isSmallScreen(context)
+                                      ? 9
+                                      : 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              SizedBox(
+                                width: 200,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        final url = Uri.parse(
+                                            'https://www.cookiesandyou.com/');
+                                        launchUrl(url);
+                                      },
+                                      child: const Text(
+                                        'Learn more',
+                                        style: TextStyle(color: ColorName.white),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ColorName.primary,
+                                        textStyle: const TextStyle(
+                                          color: ColorName.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        ref
+                                            .read(infoCookieIsVisible.notifier)
+                                            .state = false;
+                                        final prefs =
+                                            await SharedPreferences.getInstance();
+                                        await prefs.setBool(
+                                            kIsCookieVisible, false);
+                                      },
+                                      child: const Text(
+                                        'Accept',
+                                        style: TextStyle(color: ColorName.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
             minWidth: 480,
             defaultScale: true,
             breakpoints: [
