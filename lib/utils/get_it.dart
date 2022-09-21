@@ -9,7 +9,7 @@ class GetItContainer {
   static void initializeAppwrite(Client sdk) {
     GetIt.I.registerSingleton<Client>(sdk);
     GetIt.I.registerSingleton<Account>(Account(sdk));
-    GetIt.I.registerSingleton<Database>(Database(sdk));
+    GetIt.I.registerSingleton<Databases>(Databases(sdk));
     GetIt.I.registerSingleton<Realtime>(Realtime(sdk));
     GetIt.I.registerSingleton<Teams>(Teams(sdk));
   }

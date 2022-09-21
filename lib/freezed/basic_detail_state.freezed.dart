@@ -12,31 +12,7 @@ part of 'basic_detail_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$BasicDetailStateTearOff {
-  const _$BasicDetailStateTearOff();
-
-  _Idle<T> idle<T>(T data) {
-    return _Idle<T>(
-      data,
-    );
-  }
-
-  _Loading<T> loading<T>() {
-    return _Loading<T>();
-  }
-
-  _Error<T> error<T>(String message) {
-    return _Error<T>(
-      message,
-    );
-  }
-}
-
-/// @nodoc
-const $BasicDetailState = _$BasicDetailStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$BasicDetailState<T> {
@@ -104,27 +80,27 @@ class _$BasicDetailStateCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-abstract class _$IdleCopyWith<T, $Res> {
-  factory _$IdleCopyWith(_Idle<T> value, $Res Function(_Idle<T>) then) =
-      __$IdleCopyWithImpl<T, $Res>;
+abstract class _$$_IdleCopyWith<T, $Res> {
+  factory _$$_IdleCopyWith(_$_Idle<T> value, $Res Function(_$_Idle<T>) then) =
+      __$$_IdleCopyWithImpl<T, $Res>;
   $Res call({T data});
 }
 
 /// @nodoc
-class __$IdleCopyWithImpl<T, $Res>
+class __$$_IdleCopyWithImpl<T, $Res>
     extends _$BasicDetailStateCopyWithImpl<T, $Res>
-    implements _$IdleCopyWith<T, $Res> {
-  __$IdleCopyWithImpl(_Idle<T> _value, $Res Function(_Idle<T>) _then)
-      : super(_value, (v) => _then(v as _Idle<T>));
+    implements _$$_IdleCopyWith<T, $Res> {
+  __$$_IdleCopyWithImpl(_$_Idle<T> _value, $Res Function(_$_Idle<T>) _then)
+      : super(_value, (v) => _then(v as _$_Idle<T>));
 
   @override
-  _Idle<T> get _value => super._value as _Idle<T>;
+  _$_Idle<T> get _value => super._value as _$_Idle<T>;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_Idle<T>(
+    return _then(_$_Idle<T>(
       data == freezed
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -150,7 +126,7 @@ class _$_Idle<T> implements _Idle<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Idle<T> &&
+            other is _$_Idle<T> &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
@@ -160,8 +136,8 @@ class _$_Idle<T> implements _Idle<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$IdleCopyWith<T, _Idle<T>> get copyWith =>
-      __$IdleCopyWithImpl<T, _Idle<T>>(this, _$identity);
+  _$$_IdleCopyWith<T, _$_Idle<T>> get copyWith =>
+      __$$_IdleCopyWithImpl<T, _$_Idle<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -233,30 +209,31 @@ class _$_Idle<T> implements _Idle<T> {
 }
 
 abstract class _Idle<T> implements BasicDetailState<T> {
-  const factory _Idle(T data) = _$_Idle<T>;
+  const factory _Idle(final T data) = _$_Idle<T>;
 
   T get data;
   @JsonKey(ignore: true)
-  _$IdleCopyWith<T, _Idle<T>> get copyWith =>
+  _$$_IdleCopyWith<T, _$_Idle<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<T, $Res> {
-  factory _$LoadingCopyWith(
-          _Loading<T> value, $Res Function(_Loading<T>) then) =
-      __$LoadingCopyWithImpl<T, $Res>;
+abstract class _$$_LoadingCopyWith<T, $Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading<T> value, $Res Function(_$_Loading<T>) then) =
+      __$$_LoadingCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<T, $Res>
+class __$$_LoadingCopyWithImpl<T, $Res>
     extends _$BasicDetailStateCopyWithImpl<T, $Res>
-    implements _$LoadingCopyWith<T, $Res> {
-  __$LoadingCopyWithImpl(_Loading<T> _value, $Res Function(_Loading<T>) _then)
-      : super(_value, (v) => _then(v as _Loading<T>));
+    implements _$$_LoadingCopyWith<T, $Res> {
+  __$$_LoadingCopyWithImpl(
+      _$_Loading<T> _value, $Res Function(_$_Loading<T>) _then)
+      : super(_value, (v) => _then(v as _$_Loading<T>));
 
   @override
-  _Loading<T> get _value => super._value as _Loading<T>;
+  _$_Loading<T> get _value => super._value as _$_Loading<T>;
 }
 
 /// @nodoc
@@ -272,7 +249,7 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading<T>);
+        (other.runtimeType == runtimeType && other is _$_Loading<T>);
   }
 
   @override
@@ -352,27 +329,28 @@ abstract class _Loading<T> implements BasicDetailState<T> {
 }
 
 /// @nodoc
-abstract class _$ErrorCopyWith<T, $Res> {
-  factory _$ErrorCopyWith(_Error<T> value, $Res Function(_Error<T>) then) =
-      __$ErrorCopyWithImpl<T, $Res>;
+abstract class _$$_ErrorCopyWith<T, $Res> {
+  factory _$$_ErrorCopyWith(
+          _$_Error<T> value, $Res Function(_$_Error<T>) then) =
+      __$$_ErrorCopyWithImpl<T, $Res>;
   $Res call({String message});
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<T, $Res>
+class __$$_ErrorCopyWithImpl<T, $Res>
     extends _$BasicDetailStateCopyWithImpl<T, $Res>
-    implements _$ErrorCopyWith<T, $Res> {
-  __$ErrorCopyWithImpl(_Error<T> _value, $Res Function(_Error<T>) _then)
-      : super(_value, (v) => _then(v as _Error<T>));
+    implements _$$_ErrorCopyWith<T, $Res> {
+  __$$_ErrorCopyWithImpl(_$_Error<T> _value, $Res Function(_$_Error<T>) _then)
+      : super(_value, (v) => _then(v as _$_Error<T>));
 
   @override
-  _Error<T> get _value => super._value as _Error<T>;
+  _$_Error<T> get _value => super._value as _$_Error<T>;
 
   @override
   $Res call({
     Object? message = freezed,
   }) {
-    return _then(_Error<T>(
+    return _then(_$_Error<T>(
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -398,7 +376,7 @@ class _$_Error<T> implements _Error<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Error<T> &&
+            other is _$_Error<T> &&
             const DeepCollectionEquality().equals(other.message, message));
   }
 
@@ -408,8 +386,8 @@ class _$_Error<T> implements _Error<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$ErrorCopyWith<T, _Error<T>> get copyWith =>
-      __$ErrorCopyWithImpl<T, _Error<T>>(this, _$identity);
+  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
+      __$$_ErrorCopyWithImpl<T, _$_Error<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -481,10 +459,10 @@ class _$_Error<T> implements _Error<T> {
 }
 
 abstract class _Error<T> implements BasicDetailState<T> {
-  const factory _Error(String message) = _$_Error<T>;
+  const factory _Error(final String message) = _$_Error<T>;
 
   String get message;
   @JsonKey(ignore: true)
-  _$ErrorCopyWith<T, _Error<T>> get copyWith =>
+  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

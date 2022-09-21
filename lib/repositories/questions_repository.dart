@@ -10,20 +10,19 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestionsRepository {
-  final db = GetIt.I<Database>();
+  final db = GetIt.I<Databases>();
 
-  Future createQuestion(String question, List<String> categoryIds) async {
-    final now = DateTime.now();
+  Future<void> createQuestion(String question, List<String> categoryIds) async {
     final prefs = await SharedPreferences.getInstance();
 
     await ErrorWrapper.guard(
       () => db.createDocument(
+        databaseId: kDatabaseId,
         collectionId: kQuestionsCollectionId,
         documentId: 'unique()',
         data: <String, dynamic>{
           'value': question,
           'category_ids': categoryIds,
-          'created_at': now.toIso8601String(),
           'language': prefs.getString(kDefaultLanguage) ?? 'id'
         },
       ),
@@ -34,6 +33,7 @@ class QuestionsRepository {
   Future<Question> getQuestion(String questionId) async {
     final result = await ErrorWrapper.guard(
       () => db.getDocument(
+        databaseId: kDatabaseId,
         collectionId: kQuestionsCollectionId,
         documentId: questionId,
       ),
@@ -45,15 +45,18 @@ class QuestionsRepository {
 
   Future<List<Question>> getQuestions({required bool isPopular}) async {
     final prefs = await SharedPreferences.getInstance();
+    final lang = prefs.getString(kDefaultLanguage) ?? 'id';
+
     final result = await ErrorWrapper.guard(
       () => db.listDocuments(
+        databaseId: kDatabaseId,
         collectionId: kQuestionsCollectionId,
-        queries: <dynamic>[
-          Query.equal('language', prefs.getString(kDefaultLanguage) ?? 'id'),
-          if (isPopular) Query.greaterEqual('used_count', 10),
+        queries: [
+          Query.equal('language', lang) as String,
+          if (isPopular) Query.greaterThanEqual('used_count', 10) as String,
+          Query.orderDesc('\$createdAt'),
+          if (isPopular) Query.orderDesc('used_count')
         ],
-        orderTypes: <String>['DESC'],
-        orderAttributes: <String>[if (isPopular) 'used_count'],
       ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
@@ -63,7 +66,10 @@ class QuestionsRepository {
 
   Future<List<QuestionCategory>> getQuestionCategories() async {
     final result = await ErrorWrapper.guard(
-      () => db.listDocuments(collectionId: kQuestionCategoriesCollectionId),
+      () => db.listDocuments(
+        databaseId: kDatabaseId,
+        collectionId: kQuestionCategoriesCollectionId,
+      ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
 

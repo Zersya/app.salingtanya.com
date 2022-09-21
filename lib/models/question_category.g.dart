@@ -9,7 +9,7 @@ part of 'question_category.dart';
 QuestionCategory _$QuestionCategoryFromJson(Map<String, dynamic> json) =>
     QuestionCategory(
       json[r'$id'] as String,
-      json[r'$collection'] as String,
+      json[r'$collectionId'] as String,
       json['color'] as String,
       json['name_en'] as String,
       json['name_id'] as String,
@@ -18,7 +18,7 @@ QuestionCategory _$QuestionCategoryFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$QuestionCategoryToJson(QuestionCategory instance) =>
     <String, dynamic>{
       r'$id': instance.id,
-      r'$collection': instance.collection,
+      r'$collectionId': instance.collectionId,
       'name_en': instance.nameEn,
       'name_id': instance.nameId,
       'color': instance.color,

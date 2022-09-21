@@ -6,7 +6,7 @@ part 'question_category.g.dart';
 class QuestionCategory {
   QuestionCategory(
     this.id,
-    this.collection,
+    this.collectionId,
     this.color,
     this.nameEn,
     this.nameId,
@@ -20,8 +20,8 @@ class QuestionCategory {
   @JsonKey(name: '\$id')
   final String id;
 
-  @JsonKey(name: '\$collection')
-  final String collection;
+  @JsonKey(name: '\$collectionId')
+  final String collectionId;
 
   @JsonKey(name: 'name_en')
   final String nameEn;

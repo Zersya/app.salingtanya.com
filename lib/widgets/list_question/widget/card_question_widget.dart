@@ -20,7 +20,7 @@ class QuestionCardWidget extends ConsumerWidget {
   final Question question;
   final bool isSelectable;
   final double width;
-  final Function(String)? onTapEmoji;
+  final void Function(String)? onTapEmoji;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

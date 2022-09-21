@@ -24,7 +24,8 @@ class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
       final room = Room.fromJson(event.payload);
 
       ref.read(selectedRoomProvider.notifier).state = room;
-      ref.read(selectedQuestionsProvider.notifier).state = room.questionIds;
+      ref.read(selectedQuestionsProvider.notifier).state =
+          room.questionIds;
 
       final activeQuestion = ref.read(activeQuestionProvider);
 
@@ -50,7 +51,8 @@ class DetailRoomNotifier extends StateNotifier<BasicDetailState<Room?>> {
 
       final result = await _repo.getRoom(roomId);
       ref.read(selectedRoomProvider.notifier).state = result;
-      ref.read(selectedQuestionsProvider.notifier).state = result.questionIds;
+      ref.read(selectedQuestionsProvider.notifier).state =
+          result.questionIds;
 
       if (result.activeQuestionId != null) {
         await ref

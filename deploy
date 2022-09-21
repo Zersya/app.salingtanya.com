@@ -1,0 +1,1 @@
+flutter build web -t lib/main.dart && firebase deploy --only hosting --token 1//0gm2LO03eoCyhCgYIARAAGBASNwF-L9IrK7XrT3x8mbSwBQ2XSmVv3YXHrrG2miWtUG-vYZDOix3poGrrjw_-7pgZ54Aamlh6goM

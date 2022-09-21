@@ -160,7 +160,6 @@ class _DetailRoomBody extends ConsumerWidget {
                             width: 300,
                             onTapEmoji: (value) {
                               final newEmojis = room.activeQuestionEmojis
-                                  .toList()
                                 ..add(value);
 
                               final jsonRoom = room.toJson();
@@ -183,7 +182,9 @@ class _DetailRoomBody extends ConsumerWidget {
                             onPressed: () {
                               final result = ref
                                   .read(questionRoomProvider.notifier)
-                                  .getRandomQuestionId(room.questionIds);
+                                  .getRandomQuestionId(
+                                    room.questionIds,
+                                  );
 
                               ref
                                   .read(questionRoomProvider.notifier)

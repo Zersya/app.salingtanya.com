@@ -4,6 +4,8 @@ const kRoomsCollectionId = '6261e0df7718d5ca7dfd';
 const kQuestionsCollectionId = '6261dc565dc7276a20d0';
 const kQuestionCategoriesCollectionId = '6261de7869623916a7b6';
 
+const kDatabaseId = '6261dc565dc7276a20d0';
+
 const kIsDarkMode = 'isDarkMode';
 const kDefaultLanguage = 'default_language';
 const kIsCookieVisible = 'is_cookie_visible';

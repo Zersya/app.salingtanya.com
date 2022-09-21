@@ -8,7 +8,7 @@ part 'room.g.dart';
 class Room {
   Room(
     this.id,
-    this.collection,
+    this.collectionId,
     this.name,
     this.slug,
     this.description,
@@ -18,7 +18,7 @@ class Room {
     this.createdAt,
     this.updatedAt,
     this.startedAt,
-    this.writeBy,
+    this.createdBy,
     this.indexSession,
     this.indexRaffle,
     this.activeQuestionId,
@@ -32,8 +32,8 @@ class Room {
   @JsonKey(name: '\$id')
   final String id;
 
-  @JsonKey(name: '\$collection')
-  final String collection;
+  @JsonKey(name: '\$collectionId')
+  final String? collectionId;
 
   final String name;
 
@@ -50,22 +50,22 @@ class Room {
   @JsonKey(name: 'question_ids')
   final List<String> questionIds;
 
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: '\$createdAt')
   final DateTime createdAt;
 
-  @JsonKey(name: 'updated_at')
+  @JsonKey(name: '\$updatedAt')
   final DateTime updatedAt;
 
   @JsonKey(name: 'started_at')
   final DateTime? startedAt;
 
-  @JsonKey(name: '\$write')
-  final List<String> writeBy;
+  @JsonKey(name: 'created_by')
+  final String? createdBy;
 
-  @JsonKey(name: 'index_session')
+  @JsonKey(name: 'index_session', defaultValue: 0)
   final int indexSession;
 
-  @JsonKey(name: 'index_raffle')
+  @JsonKey(name: 'index_raffle', defaultValue: 0)
   final int indexRaffle;
 
   @JsonKey(name: 'active_question_id')
@@ -74,6 +74,5 @@ class Room {
   @JsonKey(name: 'active_question_emojis')
   List<String> activeQuestionEmojis;
 
-  bool isCreatedByMe() =>
-      writeBy.contains('user:${GetIt.I<UserHelper>().userId}');
+  bool isCreatedByMe() => createdBy == GetIt.I<UserHelper>().userId;
 }

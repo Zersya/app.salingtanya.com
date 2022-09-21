@@ -55,12 +55,12 @@ class _AppState extends ConsumerState<App> {
 
     sdk
         .setEndpoint('https://api.salingtanya.com/v1')
-        .setProject('625b9c6a48a44771d02e')
+        .setProject('632b31132802ac316887')
         .setSelfSigned();
 
     GetItContainer.initializeAppwrite(sdk);
 
-    final brightness = SchedulerBinding.instance!.window.platformBrightness;
+    final brightness = SchedulerBinding.instance.window.platformBrightness;
     final isDarkMode = brightness == Brightness.dark;
     ref.read(themeIsDarkProvider.notifier).state = isDarkMode;
 

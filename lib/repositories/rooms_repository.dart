@@ -7,31 +7,34 @@ import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
 
 class RoomsRepository {
-  final db = GetIt.I<Database>();
+  final db = GetIt.I<Databases>();
   final realtime = GetIt.I<Realtime>();
   late RealtimeSubscription subscription;
 
   Future<void> subscribe(String roomId) async {
-    subscription = realtime
-        .subscribe(['collections.$kRoomsCollectionId.documents.$roomId']);
+    subscription = realtime.subscribe([
+      'databases.$kDatabaseId.collections.$kRoomsCollectionId.documents.$roomId'
+    ]);
   }
 
   Future<Room> createRoom(String name) async {
     final result = await ErrorWrapper.guard(
-      () {
+      () async {
         final now = DateTime.now();
         final slug =
             // ignore: lines_longer_than_80_chars
             '${name.toLowerCase().replaceAll(' ', '-')}-${now.millisecondsSinceEpoch}';
 
+        final session = await GetIt.I<UserHelper>().getSession();
+
         return db.createDocument(
+          databaseId: kDatabaseId,
           collectionId: kRoomsCollectionId,
           documentId: 'unique()',
           data: <String, dynamic>{
             'name': name,
             'slug': slug,
-            'created_at': now.toIso8601String(),
-            'updated_at': now.toIso8601String(),
+            'created_by': session.userId,
           },
         );
       },
@@ -44,23 +47,30 @@ class RoomsRepository {
   Future<List<Room>> getRooms() async {
     final result = await ErrorWrapper.guard(
       () => db.listDocuments(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
-        limit: 100,
-        orderTypes: <String>['DESC'],
+        queries: [
+          Query.limit(100),
+          Query.orderDesc('\$createdAt'),
+        ],
       ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
     final session = await GetIt.I<UserHelper>().getSession();
 
     return result.documents
-        .where((element) => element.$write.contains('user:${session.userId}'))
+        // .where((element) => element.$write.contains('user:${session.userId}'))
         .map((e) => Room.fromJson(e.data))
         .toList();
   }
 
   Future<Room> getRoom(String id) async {
     final result = await ErrorWrapper.guard(
-      () => db.getDocument(collectionId: kRoomsCollectionId, documentId: id),
+      () => db.getDocument(
+        databaseId: kDatabaseId,
+        collectionId: kRoomsCollectionId,
+        documentId: id,
+      ),
       onError: (e) => throw ExceptionWithMessage(e.toString()),
     );
 
@@ -71,11 +81,11 @@ class RoomsRepository {
     final now = DateTime.now();
     final data = <String, dynamic>{
       'member_names': names,
-      'updated_at': now.toIso8601String(),
     };
 
     final result = await ErrorWrapper.guard(
       () => db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
         documentId: docId,
         data: data,
@@ -95,11 +105,11 @@ class RoomsRepository {
     final now = DateTime.now();
     final data = <String, dynamic>{
       'question_ids': questions,
-      'updated_at': now.toIso8601String(),
     };
 
     final result = await ErrorWrapper.guard(
       () => db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
         documentId: docId,
         data: data,
@@ -110,6 +120,7 @@ class RoomsRepository {
     await ErrorWrapper.guard(() async {
       for (final questionId in questions) {
         final rawQuestion = await db.getDocument(
+          databaseId: kDatabaseId,
           collectionId: kQuestionsCollectionId,
           documentId: questionId,
         );
@@ -121,6 +132,7 @@ class RoomsRepository {
         };
 
         await db.updateDocument(
+          databaseId: kDatabaseId,
           collectionId: kQuestionsCollectionId,
           documentId: questionId,
           data: data,
@@ -135,13 +147,11 @@ class RoomsRepository {
 
   Future<void> startRoom(String docId) async {
     final now = DateTime.now();
-    final data = <String, dynamic>{
-      'started_at': now.toIso8601String(),
-      'updated_at': now.toIso8601String(),
-    };
+    final data = <String, dynamic>{'started_at': now.toIso8601String()};
 
     await ErrorWrapper.guard(
       () => db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
         documentId: docId,
         data: data,
@@ -170,13 +180,13 @@ class RoomsRepository {
       'active_question_emojis': <String>[],
       'index_raffle': indexRaffle,
       'index_session': indexSession,
-      'updated_at': now.toIso8601String(),
     };
 
     await Future<void>.delayed(const Duration(milliseconds: 500));
 
     await ErrorWrapper.guard(
       () => db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
         documentId: docId,
         data: data,
@@ -192,11 +202,11 @@ class RoomsRepository {
     final now = DateTime.now();
     final data = <String, dynamic>{
       'active_question_emojis': emojis,
-      'updated_at': now.toIso8601String(),
     };
 
     await ErrorWrapper.guard(
       () => db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kRoomsCollectionId,
         documentId: docId,
         data: data,

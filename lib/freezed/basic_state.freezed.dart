@@ -12,23 +12,7 @@ part of 'basic_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$BasicStateTearOff {
-  const _$BasicStateTearOff();
-
-  _Idle idle() {
-    return const _Idle();
-  }
-
-  _Loading loading() {
-    return const _Loading();
-  }
-}
-
-/// @nodoc
-const $BasicState = _$BasicStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$BasicState {
@@ -89,19 +73,19 @@ class _$BasicStateCopyWithImpl<$Res> implements $BasicStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$IdleCopyWith<$Res> {
-  factory _$IdleCopyWith(_Idle value, $Res Function(_Idle) then) =
-      __$IdleCopyWithImpl<$Res>;
+abstract class _$$_IdleCopyWith<$Res> {
+  factory _$$_IdleCopyWith(_$_Idle value, $Res Function(_$_Idle) then) =
+      __$$_IdleCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$IdleCopyWithImpl<$Res> extends _$BasicStateCopyWithImpl<$Res>
-    implements _$IdleCopyWith<$Res> {
-  __$IdleCopyWithImpl(_Idle _value, $Res Function(_Idle) _then)
-      : super(_value, (v) => _then(v as _Idle));
+class __$$_IdleCopyWithImpl<$Res> extends _$BasicStateCopyWithImpl<$Res>
+    implements _$$_IdleCopyWith<$Res> {
+  __$$_IdleCopyWithImpl(_$_Idle _value, $Res Function(_$_Idle) _then)
+      : super(_value, (v) => _then(v as _$_Idle));
 
   @override
-  _Idle get _value => super._value as _Idle;
+  _$_Idle get _value => super._value as _$_Idle;
 }
 
 /// @nodoc
@@ -117,7 +101,7 @@ class _$_Idle implements _Idle {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Idle);
+        (other.runtimeType == runtimeType && other is _$_Idle);
   }
 
   @override
@@ -191,19 +175,20 @@ abstract class _Idle implements BasicState {
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<$Res> {
-  factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
-      __$LoadingCopyWithImpl<$Res>;
+abstract class _$$_LoadingCopyWith<$Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading value, $Res Function(_$_Loading) then) =
+      __$$_LoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<$Res> extends _$BasicStateCopyWithImpl<$Res>
-    implements _$LoadingCopyWith<$Res> {
-  __$LoadingCopyWithImpl(_Loading _value, $Res Function(_Loading) _then)
-      : super(_value, (v) => _then(v as _Loading));
+class __$$_LoadingCopyWithImpl<$Res> extends _$BasicStateCopyWithImpl<$Res>
+    implements _$$_LoadingCopyWith<$Res> {
+  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+      : super(_value, (v) => _then(v as _$_Loading));
 
   @override
-  _Loading get _value => super._value as _Loading;
+  _$_Loading get _value => super._value as _$_Loading;
 }
 
 /// @nodoc
@@ -219,7 +204,7 @@ class _$_Loading implements _Loading {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading);
+        (other.runtimeType == runtimeType && other is _$_Loading);
   }
 
   @override

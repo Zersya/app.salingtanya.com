@@ -6,7 +6,7 @@ part 'question.g.dart';
 class Question {
   Question(
     this.id,
-    this.collection,
+    this.collectionId,
     this.value,
     this.usedCount,
     this.categoryIds,
@@ -22,8 +22,8 @@ class Question {
   @JsonKey(name: '\$id')
   final String id;
 
-  @JsonKey(name: '\$collection')
-  final String collection;
+  @JsonKey(name: '\$collectionId')
+  final String collectionId;
 
   final String value;
 
@@ -33,7 +33,7 @@ class Question {
   @JsonKey(name: 'category_ids')
   final List<String> categoryIds;
 
-  @JsonKey(name: 'created_at')
+  @JsonKey(name: '\$createdAt')
   final DateTime createdAt;
 
   @JsonKey(name: 'language', defaultValue: 'id')

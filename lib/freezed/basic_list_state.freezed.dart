@@ -12,31 +12,7 @@ part of 'basic_list_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$BasicListStateTearOff {
-  const _$BasicListStateTearOff();
-
-  _Idle<T> idle<T>(List<T> data) {
-    return _Idle<T>(
-      data,
-    );
-  }
-
-  _Loading<T> loading<T>() {
-    return _Loading<T>();
-  }
-
-  _Error<T> error<T>(String error) {
-    return _Error<T>(
-      error,
-    );
-  }
-}
-
-/// @nodoc
-const $BasicListState = _$BasicListStateTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$BasicListState<T> {
@@ -104,28 +80,29 @@ class _$BasicListStateCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-abstract class _$IdleCopyWith<T, $Res> {
-  factory _$IdleCopyWith(_Idle<T> value, $Res Function(_Idle<T>) then) =
-      __$IdleCopyWithImpl<T, $Res>;
+abstract class _$$_IdleCopyWith<T, $Res> {
+  factory _$$_IdleCopyWith(_$_Idle<T> value, $Res Function(_$_Idle<T>) then) =
+      __$$_IdleCopyWithImpl<T, $Res>;
   $Res call({List<T> data});
 }
 
 /// @nodoc
-class __$IdleCopyWithImpl<T, $Res> extends _$BasicListStateCopyWithImpl<T, $Res>
-    implements _$IdleCopyWith<T, $Res> {
-  __$IdleCopyWithImpl(_Idle<T> _value, $Res Function(_Idle<T>) _then)
-      : super(_value, (v) => _then(v as _Idle<T>));
+class __$$_IdleCopyWithImpl<T, $Res>
+    extends _$BasicListStateCopyWithImpl<T, $Res>
+    implements _$$_IdleCopyWith<T, $Res> {
+  __$$_IdleCopyWithImpl(_$_Idle<T> _value, $Res Function(_$_Idle<T>) _then)
+      : super(_value, (v) => _then(v as _$_Idle<T>));
 
   @override
-  _Idle<T> get _value => super._value as _Idle<T>;
+  _$_Idle<T> get _value => super._value as _$_Idle<T>;
 
   @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_Idle<T>(
+    return _then(_$_Idle<T>(
       data == freezed
-          ? _value.data
+          ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as List<T>,
     ));
@@ -135,10 +112,14 @@ class __$IdleCopyWithImpl<T, $Res> extends _$BasicListStateCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$_Idle<T> implements _Idle<T> {
-  const _$_Idle(this.data);
+  const _$_Idle(final List<T> data) : _data = data;
 
+  final List<T> _data;
   @override
-  final List<T> data;
+  List<T> get data {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_data);
+  }
 
   @override
   String toString() {
@@ -149,18 +130,18 @@ class _$_Idle<T> implements _Idle<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Idle<T> &&
-            const DeepCollectionEquality().equals(other.data, data));
+            other is _$_Idle<T> &&
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
-  _$IdleCopyWith<T, _Idle<T>> get copyWith =>
-      __$IdleCopyWithImpl<T, _Idle<T>>(this, _$identity);
+  _$$_IdleCopyWith<T, _$_Idle<T>> get copyWith =>
+      __$$_IdleCopyWithImpl<T, _$_Idle<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -232,30 +213,31 @@ class _$_Idle<T> implements _Idle<T> {
 }
 
 abstract class _Idle<T> implements BasicListState<T> {
-  const factory _Idle(List<T> data) = _$_Idle<T>;
+  const factory _Idle(final List<T> data) = _$_Idle<T>;
 
   List<T> get data;
   @JsonKey(ignore: true)
-  _$IdleCopyWith<T, _Idle<T>> get copyWith =>
+  _$$_IdleCopyWith<T, _$_Idle<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$LoadingCopyWith<T, $Res> {
-  factory _$LoadingCopyWith(
-          _Loading<T> value, $Res Function(_Loading<T>) then) =
-      __$LoadingCopyWithImpl<T, $Res>;
+abstract class _$$_LoadingCopyWith<T, $Res> {
+  factory _$$_LoadingCopyWith(
+          _$_Loading<T> value, $Res Function(_$_Loading<T>) then) =
+      __$$_LoadingCopyWithImpl<T, $Res>;
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<T, $Res>
+class __$$_LoadingCopyWithImpl<T, $Res>
     extends _$BasicListStateCopyWithImpl<T, $Res>
-    implements _$LoadingCopyWith<T, $Res> {
-  __$LoadingCopyWithImpl(_Loading<T> _value, $Res Function(_Loading<T>) _then)
-      : super(_value, (v) => _then(v as _Loading<T>));
+    implements _$$_LoadingCopyWith<T, $Res> {
+  __$$_LoadingCopyWithImpl(
+      _$_Loading<T> _value, $Res Function(_$_Loading<T>) _then)
+      : super(_value, (v) => _then(v as _$_Loading<T>));
 
   @override
-  _Loading<T> get _value => super._value as _Loading<T>;
+  _$_Loading<T> get _value => super._value as _$_Loading<T>;
 }
 
 /// @nodoc
@@ -271,7 +253,7 @@ class _$_Loading<T> implements _Loading<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading<T>);
+        (other.runtimeType == runtimeType && other is _$_Loading<T>);
   }
 
   @override
@@ -351,27 +333,28 @@ abstract class _Loading<T> implements BasicListState<T> {
 }
 
 /// @nodoc
-abstract class _$ErrorCopyWith<T, $Res> {
-  factory _$ErrorCopyWith(_Error<T> value, $Res Function(_Error<T>) then) =
-      __$ErrorCopyWithImpl<T, $Res>;
+abstract class _$$_ErrorCopyWith<T, $Res> {
+  factory _$$_ErrorCopyWith(
+          _$_Error<T> value, $Res Function(_$_Error<T>) then) =
+      __$$_ErrorCopyWithImpl<T, $Res>;
   $Res call({String error});
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<T, $Res>
+class __$$_ErrorCopyWithImpl<T, $Res>
     extends _$BasicListStateCopyWithImpl<T, $Res>
-    implements _$ErrorCopyWith<T, $Res> {
-  __$ErrorCopyWithImpl(_Error<T> _value, $Res Function(_Error<T>) _then)
-      : super(_value, (v) => _then(v as _Error<T>));
+    implements _$$_ErrorCopyWith<T, $Res> {
+  __$$_ErrorCopyWithImpl(_$_Error<T> _value, $Res Function(_$_Error<T>) _then)
+      : super(_value, (v) => _then(v as _$_Error<T>));
 
   @override
-  _Error<T> get _value => super._value as _Error<T>;
+  _$_Error<T> get _value => super._value as _$_Error<T>;
 
   @override
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_Error<T>(
+    return _then(_$_Error<T>(
       error == freezed
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -397,7 +380,7 @@ class _$_Error<T> implements _Error<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Error<T> &&
+            other is _$_Error<T> &&
             const DeepCollectionEquality().equals(other.error, error));
   }
 
@@ -407,8 +390,8 @@ class _$_Error<T> implements _Error<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$ErrorCopyWith<T, _Error<T>> get copyWith =>
-      __$ErrorCopyWithImpl<T, _Error<T>>(this, _$identity);
+  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
+      __$$_ErrorCopyWithImpl<T, _$_Error<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -480,10 +463,10 @@ class _$_Error<T> implements _Error<T> {
 }
 
 abstract class _Error<T> implements BasicListState<T> {
-  const factory _Error(String error) = _$_Error<T>;
+  const factory _Error(final String error) = _$_Error<T>;
 
   String get error;
   @JsonKey(ignore: true)
-  _$ErrorCopyWith<T, _Error<T>> get copyWith =>
+  _$$_ErrorCopyWith<T, _$_Error<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

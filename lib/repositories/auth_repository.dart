@@ -12,9 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRepository {
   final account = GetIt.I<Account>();
-  final db = GetIt.I<Database>();
+  final db = GetIt.I<Databases>();
 
-  Future signInAnonymously() async {
+  Future<void> signInAnonymously() async {
     try {
       await account.createAnonymousSession();
     } on AppwriteException catch (e) {
@@ -40,7 +40,7 @@ class AuthRepository {
     }
   }
 
-  Future signInGoogle() async {
+  Future<void> signInGoogle() async {
     try {
       var redirectUrl = '$defaultUrl/auth/web.html';
       if (!kIsWeb && Platform.isAndroid) {
@@ -59,11 +59,13 @@ class AuthRepository {
       final now = DateTime.now();
 
       await db.getDocument(
+        databaseId: kDatabaseId,
         collectionId: kUsersCollectionId,
         documentId: session.userId,
       );
 
       await db.updateDocument(
+        databaseId: kDatabaseId,
         collectionId: kUsersCollectionId,
         documentId: session.userId,
         data: <String, dynamic>{
@@ -81,6 +83,7 @@ class AuthRepository {
         final now = DateTime.now();
 
         await db.createDocument(
+          databaseId: kDatabaseId,
           collectionId: kUsersCollectionId,
           documentId: session.userId,
           data: <String, dynamic>{
@@ -105,7 +108,7 @@ class AuthRepository {
     }
   }
 
-  Future signOut() async {
+  Future<void> signOut() async {
     try {
       final session = await account.getSession(sessionId: 'current');
       await account.deleteSession(sessionId: session.$id);
